@@ -3,6 +3,10 @@
     var when = require('when');
     var net = require('net');
     var bitSyntax = require('bitsyntax');
+    var logOut = '';
+    var logIn = '';
+    var level = {};
+    var log = null;
 
     return function TcpPort() {
         //private fields
@@ -43,6 +47,9 @@
                 }
             },
             init: function() {
+                logOut = 'out ' + this.id + ':';
+                logIn = 'in  ' + this.id + ':';
+                (log = this.logger) && (level = log.initLevels(this.logLevel));
                 var methods = {};
                 methods['ports.' + this.config.id + '.start'] = this.start;
                 methods['ports.' + this.config.id + '.stop'] = this.stop;
@@ -54,7 +61,8 @@
                         framePattern = bitSyntax.matcher('len:' + this.config.format.size + ', data:len/binary, rest/binary');
                     }
                     if (this.config.format.codec) {
-                        codec = this.utcodec.get(this.config.format.codec).init({});
+                        var x = this.utcodec.get(this.config.format.codec);
+                        codec = new x({});
                     }
                 }
             },
@@ -62,12 +70,12 @@
                 if (this.config.listen) {
                     conn = net.createServer(function(c) {
                         c.on('data', new Receiver(this.receive.bind(this)));
-                    });
+                    }.bind(this));
                     conn.listen(this.config.port);
                 } else {
                     conn = net.createConnection({port:this.config.port, host:this.config.host}, function(c) {
                         c.on('data', new Receiver(this.receive.bind(this)));
-                    });
+                    }.bind(this));
                 }
             },
 
