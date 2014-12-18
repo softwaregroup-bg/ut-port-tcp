@@ -75,10 +75,6 @@
         }
     };
 
-    TcpPort.prototype.receive = function(msg) {
-        this.level.debug && this.log.debug(msg);
-    };
-
     return TcpPort;
 
 });}(typeof define === 'function' && define.amd ? define : function(factory) { module.exports = factory(require); }));
