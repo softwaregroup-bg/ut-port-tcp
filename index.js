@@ -6,11 +6,13 @@
     var Port = require('ut-bus/port');
     var util = require('util');
     var utcodec = require('ut-codec');
+    var through2 = require('through2');
 
     function TcpPort() {
         Port.call(this);
         this.conn = null;
         this.framePattern = null;
+        this.frameBuilder = null;
         this.codec = null;
         this.config = {
             id: null,
@@ -29,29 +31,63 @@
 
     util.inherits(TcpPort, Port);
 
-    function Receiver(port) {
+    TcpPort.prototype.decode = function decode() {
         var buffer = new Buffer(0);
+        var port = this;
 
-        return function processPacket(packet) {
-            buffer = Buffer.concat([buffer, packet]);
-            this.level.trace && this.log.trace(packet);
+        return through2.obj(function decodePacket(packet, enc, callback) {
+            port.level.trace && port.level.trace({_opcode:'bytes.in',buffer:packet});
 
-            if (this.framePattern) {
+            if (port.framePattern) {
+                buffer = Buffer.concat([buffer, packet]);
                 var frame;
-                while (frame = this.framePattern(buffer)) {
+                while (frame = port.framePattern(buffer)) {
                     buffer = frame.rest;
-                    this.receive(this.codec ? this.codec.decode(frame.data) : {payload:frame.data});
+                    this.push(port.codec ? port.codec.decode(frame.data) : {payload:frame.data});
                 }
+                callback();
+            } else {
+                callback(null, {payload:packet});
             }
-        }.bind(port);
-    }
+        });
+    };
+
+    TcpPort.prototype.encode = function encode() {
+        var port = this;
+
+        return through2.obj(function encodePacket(message, enc, callback) {
+            port.level.trace && port.level.trace(message);
+            var buffer;
+            var size;
+            if (port.codec) {
+                buffer = port.codec.encode(message);
+                size = buffer && buffer.length;
+            } else if (message && message.payload) {
+                buffer = message.payload;
+                size = buffer && buffer.length;
+            } else {
+                buffer = null;
+                size = null;
+            }
+            if (port.frameBuilder) {
+                buffer =  port.frameBuilder({size:size, data:buffer});
+            }
+            if (buffer) {
+                port.level.trace && port.level.trace({_opcode:'bytes.out',buffer:buffer});
+                callback(null, buffer)
+            } else {
+                callback();
+            }
+        });
+    };
 
     TcpPort.prototype.init = function init() {
         Port.prototype.init.apply(this, arguments);
 
         if (this.config.format) {
             if (this.config.format.size) {
-                this.framePattern = bitSyntax.matcher('len:' + this.config.format.size + ', data:len/binary, rest/binary');
+                this.framePattern = bitSyntax.matcher('size:' + this.config.format.size + ', data:size/binary, rest/binary');
+                this.frameBuilder = bitSyntax.builder('size:' + this.config.format.size + ', data:size/binary');
             }
             if (this.config.format.codec) {
                 var x = utcodec.get(this.config.format.codec);
@@ -65,12 +101,12 @@
 
         if (this.config.listen) {
             this.conn = net.createServer(function(c) {
-                c.on('data', new Receiver(this));
+                this.pipe(c);
             }.bind(this));
             this.conn.listen(this.config.port);
         } else {
             this.conn = net.createConnection({port:this.config.port, host:this.config.host}, function(c) {
-                c.on('data', new Receiver(this));
+                this.pipe(c);
             }.bind(this));
         }
     };
