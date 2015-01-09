@@ -32,7 +32,7 @@ m = wire({
                     codec: 'ndc'
                 }
             },
-            log: {$ref: 'bunyan'}
+            logFactory: {$ref: 'bunyan'}
         }
     }
 }, {require: require}).then(function contextLoaded(context) {
