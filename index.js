@@ -36,7 +36,7 @@
         var port = this;
 
         return through2.obj(function decodePacket(packet, enc, callback) {
-            port.log.trace && port.log.trace({_opcode:'bytes.in',buffer:packet});
+            port.log.trace && port.log.trace({_opcode:'bytes.in', buffer:packet});
 
             if (port.framePattern) {
                 buffer = Buffer.concat([buffer, packet]);
@@ -73,7 +73,7 @@
                 buffer =  port.frameBuilder({size:size, data:buffer});
             }
             if (buffer) {
-                port.log.trace && port.log.trace({_opcode:'bytes.out',buffer:buffer});
+                port.log.trace && port.log.trace({_opcode:'bytes.out', buffer:buffer});
                 callback(null, buffer)
             } else {
                 callback();
