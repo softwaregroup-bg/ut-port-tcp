@@ -60,13 +60,13 @@
         if (this.config.listen) {
             this.server = net.createServer(function(c) {
                 this.incConnections();
-                this.pipe(c, {trace:0, callbacks:{}, conId:this.conCount}, true);
+                this.pipe(c, {trace:0, callbacks:{}, conId:this.conCount});
             }.bind(this));
             this.server.listen(this.config.port);
         } else {
             this.conn = net.createConnection({port:this.config.port, host:this.config.host}, function(c) {
                 this.incConnections();
-                this.pipe(c, {trace:0, callbacks:{}, conId:this.conCount}, true);
+                this.pipe(c, {trace:0, callbacks:{}, conId:this.conCount});
             }.bind(this));
         }
     };
