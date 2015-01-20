@@ -11,6 +11,8 @@
     function TcpPort() {
         Port.call(this);
         this.conn = null;
+        this.server = null;
+        this.conCount = 0;
         this.framePattern = null;
         this.frameBuilder = null;
         this.codec = null;
@@ -46,17 +48,25 @@
         }
     };
 
+    TcpPort.prototype.incConnections = function incConnections() {
+        if (++this.conCount > 0x1FFFFFFFFFFFFF) { //Number.MAX_SAFE_INTEGER
+            this.conCount = 1;
+        }
+    };
+
     TcpPort.prototype.start = function start(callback) {
         Port.prototype.start.apply(this, arguments);
 
         if (this.config.listen) {
-            this.conn = net.createServer(function(c) {
-                this.pipe(c, {trace:0, callbacks:{}}, true);
+            this.server = net.createServer(function(c) {
+                this.incConnections();
+                this.pipe(c, {trace:0, callbacks:{}, conId:this.conCount}, true);
             }.bind(this));
-            this.conn.listen(this.config.port);
+            this.server.listen(this.config.port);
         } else {
             this.conn = net.createConnection({port:this.config.port, host:this.config.host}, function(c) {
-                this.pipe(c, {trace:0, callbacks:{}}, true);
+                this.incConnections();
+                this.pipe(c, {trace:0, callbacks:{}, conId:this.conCount}, true);
             }.bind(this));
         }
     };
