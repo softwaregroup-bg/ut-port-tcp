@@ -64,9 +64,9 @@
             }.bind(this));
             this.server.listen(this.config.port);
         } else {
-            this.conn = net.createConnection({port:this.config.port, host:this.config.host}, function(c) {
+            this.conn = net.createConnection({port:this.config.port, host:this.config.host}, function() {
                 this.incConnections();
-                this.pipe(c, {trace:0, callbacks:{}, conId:this.conCount});
+                this.pipe(this.conn, {trace:0, callbacks:{}});
             }.bind(this));
         }
     };
