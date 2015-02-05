@@ -2,7 +2,7 @@
     //dependencies
     var when = require('when');
     var net = require('net');
-    var bitSyntax = require('bitsyntax');
+    var bitSyntax = require('ut-bitsyntax');
     var Port = require('ut-bus/port');
     var util = require('util');
     var utcodec = require('ut-codec');
