@@ -7,6 +7,7 @@
     var util = require('util');
     var utcodec = require('ut-codec');
     var through2 = require('through2');
+    var tls = require('tls');
 
     function TcpPort() {
         Port.call(this);
@@ -23,6 +24,7 @@
             host: '127.0.0.1',
             port: null,
             listen: false,
+            ssl: false,
             format: {
                 size: null,
                 codec: null,
@@ -58,16 +60,40 @@
         Port.prototype.start.apply(this, arguments);
 
         if (this.config.listen) {
-            this.server = net.createServer(function(c) {
-                this.incConnections();
-                this.pipe(c, {trace:0, callbacks:{}, conId:this.conCount});
-            }.bind(this));
+            if (this.config.ssl) {
+                this.server = tls.createServer(function(c) {
+                    this.incConnections();
+                    this.pipe(c, {trace:0, callbacks:{}, conId:this.conCount});
+                }.bind(this));
+            } else {
+                this.server = net.createServer(function(c) {
+                    this.incConnections();
+                    this.pipe(c, {trace:0, callbacks:{}, conId:this.conCount});
+                }.bind(this));
+            }
             this.server.listen(this.config.port);
         } else {
-            this.conn = net.createConnection({port:this.config.port, host:this.config.host}, function() {
-                this.incConnections();
-                this.pipe(this.conn, {trace:0, callbacks:{}});
-            }.bind(this));
+            if (this.config.ssl) {
+                this.conn = tls.connect({
+                    port: this.config.port,
+                    host: this.config.host,
+                    rejectUnauthorized: false
+                }, function(c) {
+                    this.incConnections();
+                    this.pipe(this.conn, {trace:0, callbacks:{}});
+                }.bind(this));
+                this.conn.on('data', function(data) {
+                    console.log(data);
+                })
+                this.conn.on('error', function(error) {
+                    console.log(error)
+                })
+            } else {
+                this.conn = net.createConnection({port: this.config.port, host: this.config.host}, function() {
+                    this.incConnections();
+                    this.pipe(this.conn, {trace:0, callbacks:{}});
+                }.bind(this));
+            }
         }
     };
 
