@@ -7,7 +7,8 @@
     var util = require('util');
     var utcodec = require('ut-codec');
     var through2 = require('through2');
-    var tls = require('tls');
+    var reconnect = null;
+
 
     function TcpPort() {
         Port.call(this);
@@ -38,6 +39,12 @@
     TcpPort.prototype.init = function init() {
         Port.prototype.init.apply(this, arguments);
 
+        if (this.config.ssl) {
+            reconnect = require('reconnect-tls');
+        } else {
+            //reconnect = require('reconnect-net');
+        }
+
         if (this.config.format) {
             if (this.config.format.size) {
                 this.framePattern = bitSyntax.matcher('size:' + this.config.format.size + ', data:size/binary, rest/binary');
@@ -60,34 +67,29 @@
         Port.prototype.start.apply(this, arguments);
 
         if (this.config.listen) {
-            if (this.config.ssl) {
-                this.server = tls.createServer(function(c) {
-                    this.incConnections();
-                    this.pipe(c, {trace:0, callbacks:{}, conId:this.conCount});
-                }.bind(this));
-            } else {
-                this.server = net.createServer(function(c) {
-                    this.incConnections();
-                    this.pipe(c, {trace:0, callbacks:{}, conId:this.conCount});
-                }.bind(this));
-            }
+            this.server = net.createServer(function(c) {
+                this.incConnections();
+                this.pipe(c, {trace:0, callbacks:{}, conId:this.conCount});
+            }.bind(this));
             this.server.listen(this.config.port);
         } else {
             if (this.config.ssl) {
-                this.conn = tls.connect({
-                    port: this.config.port,
+                //this.incConnections();
+                //this.pipe(this.conn, {trace:0, callbacks:{}});
+                reconnect(function(stream){
+                    console.log('streaming')
+                    this.pipe(stream)
+                }.bind(this)).connect({
                     host: this.config.host,
+                    port: this.config.port,
                     rejectUnauthorized: false
-                }, function(c) {
-                    this.incConnections();
-                    this.pipe(this.conn, {trace:0, callbacks:{}});
-                }.bind(this));
-                this.conn.on('data', function(data) {
-                    console.log(data);
-                })
-                this.conn.on('error', function(error) {
-                    console.log(error)
-                })
+                }).on('connect', function(c) {
+                    c.ssl.onerror(function(err) {
+                        console.log('ssl err')
+                    })
+                }).on('error', function(err) {
+                    console.log('err')
+                });
             } else {
                 this.conn = net.createConnection({port: this.config.port, host: this.config.host}, function() {
                     this.incConnections();
