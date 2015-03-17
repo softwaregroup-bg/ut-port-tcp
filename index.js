@@ -42,7 +42,7 @@
         if (this.config.ssl) {
             reconnect = require('reconnect-tls');
         } else {
-            //reconnect = require('reconnect-net');
+            // TODO Enable reconnect-net module for standard TCP connections
         }
 
         if (this.config.format) {
