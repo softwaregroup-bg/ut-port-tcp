@@ -7,6 +7,8 @@
     var util = require('util');
     var utcodec = require('ut-codec');
     var through2 = require('through2');
+    var reconnect = null;
+
 
     function TcpPort() {
         Port.call(this);
@@ -23,6 +25,7 @@
             host: '127.0.0.1',
             port: null,
             listen: false,
+            ssl: false,
             format: {
                 size: null,
                 codec: null,
@@ -35,6 +38,12 @@
 
     TcpPort.prototype.init = function init() {
         Port.prototype.init.apply(this, arguments);
+
+        if (this.config.ssl) {
+            reconnect = require('reconnect-tls');
+        } else {
+            // TODO Enable reconnect-net module for standard TCP connections
+        }
 
         if (this.config.format) {
             if (this.config.format.size) {
@@ -64,10 +73,23 @@
             }.bind(this));
             this.server.listen(this.config.port);
         } else {
-            this.conn = net.createConnection({port:this.config.port, host:this.config.host}, function() {
-                this.incConnections();
-                this.pipe(this.conn, {trace:0, callbacks:{}});
-            }.bind(this));
+            if (this.config.ssl) {
+                reconnect(function(stream){
+                    this.incConnections();
+                    this.pipe(stream, {trace:0, callbacks:{}});
+                }.bind(this)).connect({
+                    host: this.config.host,
+                    port: this.config.port,
+                    rejectUnauthorized: false
+                }).on('error', function(err) {
+                    // TODO Error Handling
+                });
+            } else {
+                this.conn = net.createConnection({port: this.config.port, host: this.config.host}, function() {
+                    this.incConnections();
+                    this.pipe(this.conn, {trace:0, callbacks:{}});
+                }.bind(this));
+            }
         }
     };
 
