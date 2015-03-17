@@ -74,21 +74,15 @@
             this.server.listen(this.config.port);
         } else {
             if (this.config.ssl) {
-                //this.incConnections();
-                //this.pipe(this.conn, {trace:0, callbacks:{}});
                 reconnect(function(stream){
-                    console.log('streaming')
-                    this.pipe(stream)
+                    this.incConnections();
+                    this.pipe(stream, {trace:0, callbacks:{}});
                 }.bind(this)).connect({
                     host: this.config.host,
                     port: this.config.port,
                     rejectUnauthorized: false
-                }).on('connect', function(c) {
-                    c.ssl.onerror(function(err) {
-                        console.log('ssl err')
-                    })
                 }).on('error', function(err) {
-                    console.log('err')
+                    // TODO Error Handling
                 });
             } else {
                 this.conn = net.createConnection({port: this.config.port, host: this.config.host}, function() {
