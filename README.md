@@ -12,7 +12,9 @@ The purpose of this port is for establishing TCP connections to remote network l
  - `reconnect-tls` - [GitHub Official Page](https://github.com/fgascon/reconnect-tls)
 
 In the UT5 implementations the TCP port is initialized in the following manner:
+
     ```javascript
+
     module.exports = {
 		id: 't24',
 		type: 'tcp',
@@ -33,7 +35,9 @@ In the UT5 implementations the TCP port is initialized in the following manner:
 			return msg;
 		}
 	}
+
     ```
+
 It has to be saved inside the ports folder of the implementation and the full path to the module should like this:
 
     /impl-<NAME>/ports/t24/index.js
@@ -41,6 +45,7 @@ It has to be saved inside the ports folder of the implementation and the full pa
 In the implementation's `server.js` file the port is loaded like this:
 
     ```javascript
+
     module.exports = {
 	    ports: [
 		    // ...
@@ -51,6 +56,7 @@ In the implementation's `server.js` file the port is loaded like this:
 	        // ..
 	    }
 	};
+
     ```
 
 The TCP port after the execution of its `init` method from the `ut-bus` determines if it will run on normal socket or on TLS/SSL, then it initializes its `ut-codec` to parse all in-going/out-going communications. 
@@ -62,6 +68,7 @@ Those messages get inside the `send` and `receive` methods, as described in the 
 When working with this port is important to keep in mind that you have to "remember" the requests and to match to the responses because of the asynchronicity of the port. Consider the following solution to this problem:
 
     ```javascript
+
 	var tracer = [];
 	var sequence = 0;
     module.exports = {
@@ -82,6 +89,7 @@ When working with this port is important to keep in mind that you have to "remem
 			return msg;
 		}
 	}
+	
     ```
-    
+
 The code from above ensures that the callback from the request to the TCP port will persist during the waiting time for the response. In the `send` we push the callback of the request and store it by its unique sequence number. Once the response comes we check the sequence and get the appropriate callback from the `tracer` array of callbacks.
