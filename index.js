@@ -39,7 +39,7 @@
     TcpPort.prototype.init = function init() {
         Port.prototype.init.apply(this, arguments);
 
-        reconnect = this.config.ssl ? require('reconnect-tls') : require('reconnect-net');
+        reconnect = this.config.ssl ? require('./reconnect-tls') : require('./reconnect-net');
 
         if (this.config.format) {
             if (this.config.format.size) {
@@ -70,11 +70,6 @@
             this.server.listen(this.config.port);
         } else {
             if (this.config.ssl) {
-                var s = require('tls').connect(this.config.port, this.config.host, {rejectUnauthorized: false}, function() {
-                    this.incConnections();
-                    this.pipe(s, {trace:0, callbacks:{}});
-                }.bind(this));
-                /*
                 reconnect(function(stream){
                     this.incConnections();
                     this.pipe(stream, {trace:0, callbacks:{}});
@@ -84,7 +79,7 @@
                     rejectUnauthorized: false
                 }).on('error', function(err) {
                     // TODO Error Handling
-                });*/
+                });
             } else {
                 reconnect(function (stream) {
                     this.incConnections();
