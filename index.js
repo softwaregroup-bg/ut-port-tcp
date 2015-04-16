@@ -1,14 +1,11 @@
 (function(define) {define(function(require) {
     //dependencies
-    var when = require('when');
     var net = require('net');
     var bitSyntax = require('ut-bitsyntax');
     var Port = require('ut-bus/port');
     var util = require('util');
-    var utcodec = require('ut-codec');
-    var through2 = require('through2');
+    var codec = require('ut-codec');
     var reconnect = null;
-
 
     function TcpPort() {
         Port.call(this);
@@ -47,14 +44,15 @@
                 this.frameBuilder = bitSyntax.builder('size:' + this.config.format.size + ', data:size/binary');
             }
             if (this.config.format.codec) {
-                var x = utcodec.get(this.config.format.codec);
-                this.codec = new x(this.config.format);
+                var Codec = codec.get(this.config.format.codec);
+                this.codec = new Codec(this.config.format);
             }
         }
     };
 
     TcpPort.prototype.incConnections = function incConnections() {
-        if (++this.conCount > 0x1FFFFFFFFFFFFF) { //Number.MAX_SAFE_INTEGER
+        this.conCount += 1;
+        if (this.conCount > 0x1FFFFFFFFFFFFF) { //Number.MAX_SAFE_INTEGER
             this.conCount = 1;
         }
     };
@@ -70,7 +68,7 @@
             this.server.listen(this.config.port);
         } else {
             if (this.config.ssl) {
-                reconnect(function(stream){
+                reconnect(function(stream) {
                     this.incConnections();
                     this.pipe(stream, {trace:0, callbacks:{}});
                 }.bind(this)).connect({
@@ -81,7 +79,7 @@
                     // TODO Error Handling
                 });
             } else {
-                reconnect(function (stream) {
+                reconnect(function(stream) {
                     this.incConnections();
                     this.pipe(stream, {trace:0, callbacks:{}});
                 }.bind(this)).connect({
