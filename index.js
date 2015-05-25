@@ -36,7 +36,7 @@
     TcpPort.prototype.init = function init() {
         Port.prototype.init.apply(this, arguments);
 
-        reconnect = this.config.ssl ? require('./reconnect-tls') : require('./reconnect-net');
+        reconnect = this.config.ssl ? require('ut-bus/reconnect-tls') : require('ut-bus/reconnect-net');
 
         if (this.config.format) {
             if (this.config.format.size) {
