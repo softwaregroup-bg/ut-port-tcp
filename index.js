@@ -1,5 +1,5 @@
 (function(define) {define(function(require) {
-    //dependencies
+    var _ = require('lodash');
     var net = require('net');
     var bitSyntax = require('ut-bitsyntax');
     var Port = require('ut-bus/port');
@@ -52,7 +52,7 @@
 
     TcpPort.prototype.incConnections = function incConnections() {
         this.conCount += 1;
-        if (this.conCount > 0x1FFFFFFFFFFFFF) { //Number.MAX_SAFE_INTEGER
+        if (this.conCount > 0x1FFFFFFFFFFFFF) {
             this.conCount = 1;
         }
     };
@@ -75,8 +75,6 @@
                     host: this.config.host,
                     port: this.config.port,
                     rejectUnauthorized: false
-                }).on('error', function(err) {
-                    // TODO Error Handling
                 });
             } else {
                 reconnect(function(stream) {
@@ -85,10 +83,117 @@
                 }.bind(this)).connect({
                     host: this.config.host,
                     port: this.config.port
-                }).on('error', function(err) {
-                    // TODO Error Handling
                 });
             }
+        }
+    };
+
+    TcpPort.prototype.sendToPTBridge = function(data) {
+        var keys = Object.keys(data);
+        var fields = {};
+        keys.forEach(function(value) {
+            switch(value) {
+                case 'firstName': fields['SHORT.NAME'] = data.firstName; break;
+                case 'lastName': fields['NAME.1'] = data.lastName; break;
+                case 'currentAddress':
+                    fields['STREET'] = data.addresses[0].street;
+                    if (msg.addresses[0].city) {
+                        fields['CITY.MUNICIPAL'] = data.addresses[0].city;
+                    }
+                    break;
+                case 'sector': fields['SECTOR'] = data.sector; break;
+                case 'dateOfBirth': fields['BIRTH.INCORP.DATE'] = data.dateOfBirth; break;
+                case 'phone': fields['CONTACT.MOBTEL'] = data.phones[0].number; break
+                case 'salutation': fields['L.LOCAL.SALUT'] = data.salutation; break
+                case 'gender': fields['GENDER'] = data.gender; break;
+                case 'identificationDocuments':
+                    fields['ALTER.ID.NO'] = data.documents[0].number;
+                    fields['ALTER.ID.TYPE'] = data.documents[0].type;
+                    fields['L.ID.DELIVERY'] = data.documents[0].issuer;
+                    if (data.documents[0]) {
+                        fields['L.ID.DATE.DELIV'] = data.documents[0].issueDate;
+                    }
+                    break;
+                case 'language': fields['CUST.LANGUAGE'] = data.language; break;
+                case 'industry': fields['INDUSTRY'] = data.industry; break;
+                case 'maritalStatus': fields['MARITAL.STATUS'] = data.maritalStatus; break;
+                case 'nationality': fields['NATIONALITY'] = data.nationality; break;
+                case 'residence': fields['RESIDENCE'] = data.residence; break;
+                case 'spouseName': fields['SP.MEM.NO'] = data.spouseName; break;
+                default: break;
+            }
+        });
+        return fields;
+    };
+
+    TcpPort.prototype.receiveFromPTBridge = function(data) {
+        var obj = {};
+        var formattedData = {};
+        if (data.result && data.result['ret.code'] && data.result['ret.code'] == '0') {
+            if (data.result.fields && data.result.rows) {
+                data.result.fields.forEach(function (field, key) {
+                    obj[field] = data.result.rows[0][key];
+                });
+            } else {
+                return data.result;
+            }
+            Object.keys(obj).forEach(function (key) {
+                switch (key) {
+                    case '@ID':
+                        formattedData.recordId = obj['@ID'];
+                        break;
+                    case 'SHORT.NAME':
+                        formattedData.firstName = _.trim(obj['SHORT.NAME']);
+                        break;
+                    case 'NAME.1':
+                        formattedData.lastName = _.trim(obj['NAME.1']);
+                        break;
+                    case 'CONTACT.MOBTEL':
+                        formattedData.phones = new Array();
+                        formattedData.phones[0] = {
+                            type: 'mobile',
+                            number: obj['CONTACT.MOBTEL']
+                        };
+                        break;
+                    case 'BIRTH.INCORP.DATE':
+                        formattedData.dateOfBirth = obj['BIRTH.INCORP.DATE'];
+                        break;
+                    case 'ALTER.ID.NO':
+                        formattedData.documents = new Array();
+                        formattedData.documents[0] = {
+                            type: 'passport',
+                            number: obj['ALTER.ID.NO'],
+                            issuer: obj['L.ID.DELIVERY'],
+                            issueDate: obj['L.ID.DATE.DELIV']
+                        };
+                        break;
+                    case 'balance': {
+                        formattedData.balance = obj['balance'];
+                        break;
+                    }
+                    case 'CUSTOMER':
+                        formattedData.customerNo = obj['CUSTOMER'];
+                        break;
+                    case 'CURRENCY':
+                        formattedData.currency = obj['CURRENCY'];
+                    default:
+                        break;
+                }
+            });
+            return formattedData;
+        } else {
+            var fieldErrors = [];
+            if (data.result.fields) {
+                Object.keys(data.result.fields).forEach(function(fieldError) {
+                    if (data.result.fields[fieldError].err) {
+                        fieldErrors.push(fieldError + ': ' + data.result.fields[fieldError].err);
+                    }
+                });
+            }
+            var error = new Error(data.result['ret.message']);
+            error.code = data.result['ret.code'];
+            error.fieldErrors = fieldErrors;
+            throw error;
         }
     };
 
