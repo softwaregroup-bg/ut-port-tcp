@@ -95,22 +95,22 @@
             switch(value) {
                 case 'firstName': fields['SHORT.NAME'] = data.firstName; break;
                 case 'lastName': fields['NAME.1'] = data.lastName; break;
-                case 'currentAddress':
+                case 'addresses':
                     fields['STREET'] = data.addresses[0].street;
-                    if (msg.addresses[0].city) {
+                    if (data.addresses[0].city) {
                         fields['CITY.MUNICIPAL'] = data.addresses[0].city;
                     }
                     break;
                 case 'sector': fields['SECTOR'] = data.sector; break;
                 case 'dateOfBirth': fields['BIRTH.INCORP.DATE'] = data.dateOfBirth; break;
-                case 'phone': fields['CONTACT.MOBTEL'] = data.phones[0].number; break
+                case 'phones': fields['CONTACT.MOBTEL'] = data.phones[0].number; break
                 case 'salutation': fields['L.LOCAL.SALUT'] = data.salutation; break
                 case 'gender': fields['GENDER'] = data.gender; break;
-                case 'identificationDocuments':
+                case 'documents':
                     fields['ALTER.ID.NO'] = data.documents[0].number;
                     fields['ALTER.ID.TYPE'] = data.documents[0].type;
                     fields['L.ID.DELIVERY'] = data.documents[0].issuer;
-                    if (data.documents[0]) {
+                    if (data.documents[0].issueDate) {
                         fields['L.ID.DATE.DELIV'] = data.documents[0].issueDate;
                     }
                     break;
@@ -129,7 +129,7 @@
     TcpPort.prototype.receiveFromPTBridge = function(data) {
         var obj = {};
         var formattedData = {};
-        if (data.result && data.result['ret.code'] && data.result['ret.code'] == '0') {
+        if (data.result && data.result['ret.code'] && (data.result['ret.code'] == '0' || data.result['ret.code'] == '1')) {
             if (data.result.fields && data.result.rows) {
                 data.result.fields.forEach(function (field, key) {
                     obj[field] = data.result.rows[0][key];
