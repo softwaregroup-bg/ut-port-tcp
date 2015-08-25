@@ -15,6 +15,7 @@
         this.framePattern = null;
         this.frameBuilder = null;
         this.codec = null;
+        this.connRouter = null;
         this.config = {
             id: null,
             logLevel: '',
@@ -23,6 +24,7 @@
             port: null,
             listen: false,
             ssl: false,
+            connRouter: null,
             format: {
                 size: null,
                 codec: null,
@@ -37,6 +39,7 @@
         Port.prototype.init.apply(this, arguments);
 
         reconnect = this.config.ssl ? require('ut-bus/reconnect-tls') : require('ut-bus/reconnect-net');
+        this.connRouter = this.config.connRouter;
 
         if (this.config.format) {
             if (this.config.format.size) {
