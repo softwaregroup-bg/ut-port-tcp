@@ -101,6 +101,6 @@ leave this decision into programmer's hands trough `connRouter`, detailed descri
 ```javascript
 connRouter: function(queues) {//queues is of type Object, it holds all connections available for use
     var q = Object.keys(queues);
-    return q[0];//this method should return always queue has
+    return q[0];//this method should always return the queue hash
 },
 ```
