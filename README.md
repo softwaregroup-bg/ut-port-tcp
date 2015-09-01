@@ -22,6 +22,7 @@ In the UT5 implementations the TCP port is initialized in the following manner:
         host: '<REMOTE_SERVER>',
         port: '<REMOTE_PORT>',
         listen: false,
+        socketTimeOut: 10000,//how much time to wait without communication until closing connection, defaults to "forever"
         ssl: true,
         connRouter: function(queues) {//connection router example
             var q = Object.keys(queues);

@@ -12,6 +12,7 @@
         this.conn = null;
         this.server = null;
         this.conCount = 0;
+        this.socketTimeOut = 60000 * 10;
         this.framePattern = null;
         this.frameBuilder = null;
         this.codec = null;
@@ -39,7 +40,6 @@
         Port.prototype.init.apply(this, arguments);
 
         reconnect = this.config.ssl ? require('ut-bus/reconnect-tls') : require('ut-bus/reconnect-net');
-        this.connRouter = this.config.connRouter;
 
         if (this.config.format) {
             if (this.config.format.size) {
@@ -62,6 +62,8 @@
 
     TcpPort.prototype.start = function start(callback) {
         Port.prototype.start.apply(this, arguments);
+        this.connRouter = this.config.connRouter;
+        this.socketTimeOut = this.config.socketTimeOut || this.socketTimeOut;
 
         if (this.config.listen) {
             this.server = net.createServer(function(c) {
