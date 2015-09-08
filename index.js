@@ -74,30 +74,32 @@
             }.bind(this));
             this.server.listen(this.config.port);
         } else {
+            var connProp;
             if (this.config.ssl) {
-                reconnect(function(stream) {
-                    this.incConnections();
-                    var t = through({objectMode: true}, function(chnk, enc, next) {
-                        this.push(chnk);
-                        next();
-                    });
-                    this.pipe(t, {trace:0, callbacks:{}});
-                    t.write(new Buffer(JSON.stringify({'opcode': 'portConnected'})));
-                    t.pipe(stream).pipe(t);
-                }.bind(this)).connect({
+                connProp = {
                     host: this.config.host,
                     port: this.config.port,
                     rejectUnauthorized: false
-                });
+                };
             } else {
-                reconnect(function(stream) {
-                    this.incConnections();
-                    this.pipe(stream, {trace:0, callbacks:{}});
-                }.bind(this)).connect({
+                connProp = {
                     host: this.config.host,
                     port: this.config.port
-                });
+                };
             }
+            reconnect(function(stream) {
+                this.incConnections();
+                var t = through({objectMode: true}, function(chnk, enc, next) {
+                    this.push(chnk);
+                    next();
+                });
+                this.pipe(t, {trace:0, callbacks:{}});
+                t.write(new Buffer(JSON.stringify({'opcode': 'portConnected'})));
+                t.pipe(stream).pipe(t);
+            }.bind(this)).connect(connProp)
+            .on('error', function(err) {
+                this.log && this.log.error && this.log.error(err);
+            }.bind(this));
         }
     };
 
