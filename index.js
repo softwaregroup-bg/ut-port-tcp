@@ -1,6 +1,7 @@
 (function(define) {define(function(require) {
     var _ = require('lodash');
     var net = require('net');
+    var through = require('through2');
     var bitSyntax = require('ut-bitsyntax');
     var Port = require('ut-bus/port');
     var util = require('util');
@@ -64,6 +65,7 @@
         Port.prototype.start.apply(this, arguments);
         this.connRouter = this.config.connRouter;
         this.socketTimeOut = this.config.socketTimeOut || this.socketTimeOut;
+        var port = this;
 
         if (this.config.listen) {
             this.server = net.createServer(function(c) {
@@ -75,7 +77,13 @@
             if (this.config.ssl) {
                 reconnect(function(stream) {
                     this.incConnections();
-                    this.pipe(stream, {trace:0, callbacks:{}});
+                    var t = through({objectMode: true}, function(chnk, enc, next) {
+                        this.push(chnk);
+                        next();
+                    });
+                    this.pipe(t, {trace:0, callbacks:{}});
+                    t.write(new Buffer(JSON.stringify({'opcode': 'portConnected'})));
+                    t.pipe(stream).pipe(t);
                 }.bind(this)).connect({
                     host: this.config.host,
                     port: this.config.port,
