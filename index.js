@@ -31,7 +31,7 @@
                 size: null,
                 codec: null,
                 id: null,
-                sizeAdjust: null
+                sizeAdjust: 0
             }
         };
     }
