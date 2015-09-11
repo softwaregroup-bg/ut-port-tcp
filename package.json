@@ -2,8 +2,11 @@
   "name": "ut-port-tcp",
   "version": "5.0.0",
   "dependencies": {
+    "lodash": "^3.10.1",
     "reconnect-core": "~1.0.0",
-    "ut-bus": "~5.1.0"
+    "ut-bus": "^5.0.0",
+    "ut-bitsyntax": "^5.0.0",
+    "ut-codec": "^5.0.0"
   },
   "publishConfig": {
     "registry": "http://npm.softwaregroup-bg.com:5001"
