@@ -30,7 +30,8 @@
             format: {
                 size: null,
                 codec: null,
-                id: null
+                id: null,
+                sizeAdjust: null
             }
         };
     }
@@ -44,8 +45,13 @@
 
         if (this.config.format) {
             if (this.config.format.size) {
-                this.framePattern = bitSyntax.matcher('size:' + this.config.format.size + ', data:size/binary, rest/binary');
                 this.frameBuilder = bitSyntax.builder('size:' + this.config.format.size + ', data:size/binary');
+                if (this.config.format.sizeAdjust) {
+                    this.framePatternSize = bitSyntax.matcher('size:' + this.config.format.size + ', data/binary');
+                    this.framePattern = bitSyntax.matcher('data:size/binary, rest/binary');
+                } else {
+                    this.framePattern = bitSyntax.matcher('size:' + this.config.format.size + ', data:size/binary, rest/binary');
+                }
             }
             if (this.config.format.codec) {
                 var Codec = codec.get(this.config.format.codec);
