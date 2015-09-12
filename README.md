@@ -31,7 +31,8 @@ In the UT5 implementations the TCP port is initialized in the following manner:
         namespace: ['t24'],
         format: {
             size: '32/integer',
-            codec: 'plain'
+            codec: 'plain',
+            sizeAdjust: 4 //this us used especially in smpp port where message size is telling the total size of the message (header message length + actual message) not only length of the message itself
         },
         receive: function(msg) {
             return msg;

@@ -1,6 +1,7 @@
 (function(define) {define(function(require) {
     var _ = require('lodash');
     var net = require('net');
+    var through = require('through2');
     var bitSyntax = require('ut-bitsyntax');
     var Port = require('ut-bus/port');
     var util = require('util');
@@ -29,7 +30,8 @@
             format: {
                 size: null,
                 codec: null,
-                id: null
+                id: null,
+                sizeAdjust: 0
             }
         };
     }
@@ -43,8 +45,13 @@
 
         if (this.config.format) {
             if (this.config.format.size) {
-                this.framePattern = bitSyntax.matcher('size:' + this.config.format.size + ', data:size/binary, rest/binary');
                 this.frameBuilder = bitSyntax.builder('size:' + this.config.format.size + ', data:size/binary');
+                if (this.config.format.sizeAdjust) {
+                    this.framePatternSize = bitSyntax.matcher('size:' + this.config.format.size + ', data/binary');
+                    this.framePattern = bitSyntax.matcher('data:size/binary, rest/binary');
+                } else {
+                    this.framePattern = bitSyntax.matcher('size:' + this.config.format.size + ', data:size/binary, rest/binary');
+                }
             }
             if (this.config.format.codec) {
                 var Codec = codec.get(this.config.format.codec);
@@ -64,6 +71,7 @@
         Port.prototype.start.apply(this, arguments);
         this.connRouter = this.config.connRouter;
         this.socketTimeOut = this.config.socketTimeOut || this.socketTimeOut;
+        var port = this;
 
         if (this.config.listen) {
             this.server = net.createServer(function(c) {
@@ -72,24 +80,28 @@
             }.bind(this));
             this.server.listen(this.config.port);
         } else {
+            var connProp;
             if (this.config.ssl) {
-                reconnect(function(stream) {
-                    this.incConnections();
-                    this.pipe(stream, {trace:0, callbacks:{}});
-                }.bind(this)).connect({
+                connProp = {
                     host: this.config.host,
                     port: this.config.port,
                     rejectUnauthorized: false
-                });
+                };
             } else {
-                reconnect(function(stream) {
-                    this.incConnections();
-                    this.pipe(stream, {trace:0, callbacks:{}});
-                }.bind(this)).connect({
+                connProp = {
                     host: this.config.host,
                     port: this.config.port
-                });
+                };
             }
+            reconnect(function(stream) {
+                this.incConnections();
+                var context = {trace:0, callbacks:{}};
+                var streams = this.pipe(stream, context);
+                port.receive(streams[2], {$$: {opcode: 'connected', mtid: 'notification'}}, context);
+            }.bind(this)).connect(connProp)
+            .on('error', function(err) {
+                this.log && this.log.error && this.log.error(err);
+            }.bind(this));
         }
     };
 
