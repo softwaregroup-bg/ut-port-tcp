@@ -12,9 +12,11 @@
         this.conn = null;
         this.server = null;
         this.conCount = 0;
+        this.socketTimeOut = 60000 * 10;
         this.framePattern = null;
         this.frameBuilder = null;
         this.codec = null;
+        this.connRouter = null;
         this.config = {
             id: null,
             logLevel: '',
@@ -23,6 +25,7 @@
             port: null,
             listen: false,
             ssl: false,
+            connRouter: null,
             format: {
                 size: null,
                 codec: null,
@@ -59,6 +62,8 @@
 
     TcpPort.prototype.start = function start(callback) {
         Port.prototype.start.apply(this, arguments);
+        this.connRouter = this.config.connRouter;
+        this.socketTimeOut = this.config.socketTimeOut || this.socketTimeOut;
 
         if (this.config.listen) {
             this.server = net.createServer(function(c) {
