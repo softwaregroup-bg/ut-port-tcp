@@ -54,7 +54,13 @@
                 }
             }
             if (this.config.format.codec) {
-                var Codec = codec.get(this.config.format.codec);
+                var codecType = typeof(this.config.format.codec);
+
+                if (codecType === 'function') {
+                    var Codec = this.config.format.codec;
+                } else if (codecType === 'string') {
+                    var Codec = codec.get(this.config.format.codec);
+                }
                 this.codec = new Codec(this.config.format);
             }
         }
