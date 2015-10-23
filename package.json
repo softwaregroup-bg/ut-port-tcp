@@ -1,13 +1,13 @@
 {
   "name": "ut-port-tcp",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "dependencies": {
     "lodash": "^3.10.1",
     "reconnect-core": "~1.0.0",
     "ut-bitsyntax": "~5.0.3",
     "ut-codec": "~5.0.3"
   },
-  "peerDependencies":{
+  "peerDependencies": {
     "ut-bus": "~5.2.0"
   },
   "publishConfig": {
