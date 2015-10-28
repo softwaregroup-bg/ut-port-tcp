@@ -103,7 +103,7 @@
                 this.incConnections();
                 var context = {trace:0, callbacks:{}};
                 var streams = this.pipe(stream, context);
-                port.receive(streams[2], {$$: {opcode: 'connected', mtid: 'notification'}}, context);
+                port.receive(streams[2], [{},{opcode: 'connected', mtid: 'notification', context:context}]);
             }.bind(this)).connect(connProp)
             .on('error', function(err) {
                 this.log && this.log.error && this.log.error(err);
