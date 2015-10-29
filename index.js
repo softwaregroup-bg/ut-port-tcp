@@ -101,7 +101,7 @@
             }
             reconnect(function(stream) {
                 this.incConnections();
-                var context = {trace:0, callbacks:{}};
+                var context = {trace:0, callbacks:{}, conId:this.conCount};
                 var streams = this.pipe(stream, context);
                 port.receive(streams[2], [{},{opcode: 'connected', mtid: 'notification', context:context}]);
             }.bind(this)).connect(connProp)
