@@ -41,6 +41,8 @@
     TcpPort.prototype.init = function init() {
         Port.prototype.init.apply(this, arguments);
 
+        this.bytesSent = this.counter && this.counter('counter', 'bs', 'Bytes sent');
+        this.bytesReceived = this.counter && this.counter('counter', 'br', 'Bytes received');
         reconnect = this.config.ssl ? require('ut-bus/reconnect-tls') : require('ut-bus/reconnect-net');
 
         if (this.config.format) {
