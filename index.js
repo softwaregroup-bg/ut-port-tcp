@@ -82,7 +82,9 @@
         if (this.config.listen) {
             this.server = net.createServer(function(c) {
                 this.incConnections();
-                this.pipe(c, {trace:0, callbacks:{}, conId:this.conCount});
+                var context = {trace:0, callbacks:{}, conId:this.conCount};
+                var streams = this.pipe(c, context);
+                port.receive(streams[2], {$$: {opcode: 'connected', mtid: 'notification'}}, context);
             }.bind(this));
             this.server.listen(this.config.port);
         } else {
