@@ -102,9 +102,9 @@ TcpPort.prototype.start = function start(callback) {
             };
         }
         if (this.config.localPort) {
-            options.localPort = this.config.localPort;
+            connProp.localPort = this.config.localPort;
         }
-        reconnect(options, function(stream) {
+        reconnect(function(stream) {
             this.incConnections();
             var context = {trace: 0, callbacks: {}, conId: this.conCount};
             var streams = this.pipe(stream, context);
