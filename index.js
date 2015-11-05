@@ -24,6 +24,7 @@
             type: 'tcp',
             host: '127.0.0.1',
             port: null,
+            localPort: null,
             listen: false,
             ssl: false,
             connRouter: null,
@@ -89,6 +90,7 @@
             this.server.listen(this.config.port);
         } else {
             var connProp;
+            var options = {};
             if (this.config.ssl) {
                 connProp = {
                     host: this.config.host,
@@ -101,7 +103,11 @@
                     port: this.config.port
                 };
             }
-            reconnect(function(stream) {
+
+            if (this.config.localPort) {
+                options.localPort = this.config.localPort;
+            }
+            reconnect(options, function(stream) {
                 this.incConnections();
                 var context = {trace:0, callbacks:{}};
                 var streams = this.pipe(stream, context);
