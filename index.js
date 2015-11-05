@@ -23,6 +23,7 @@ function TcpPort() {
         port: null,
         listen: false,
         ssl: false,
+        localPort: null,
         connRouter: null,
         format: {
             size: null,
