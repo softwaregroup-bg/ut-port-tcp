@@ -87,6 +87,7 @@ TcpPort.prototype.start = function start(callback) {
         this.server.listen(this.config.port);
     } else {
         var connProp;
+        var options = {};
         if (this.config.ssl) {
             connProp = {
                 host: this.config.host,
@@ -99,7 +100,10 @@ TcpPort.prototype.start = function start(callback) {
                 port: this.config.port
             };
         }
-        reconnect(function(stream) {
+        if (this.config.localPort) {
+            options.localPort = this.config.localPort;
+        }
+        reconnect(options, function(stream) {
             this.incConnections();
             var context = {trace: 0, callbacks: {}, conId: this.conCount};
             var streams = this.pipe(stream, context);
