@@ -44,15 +44,7 @@ TcpPort.prototype.init = function init() {
     reconnect = this.config.ssl ? require('ut-bus/reconnect-tls') : require('ut-bus/reconnect-net');
 
     if (this.config.format) {
-        if (this.config.format.size) {
-            this.frameBuilder = bitSyntax.builder('size:' + this.config.format.size + ', data:size/binary');
-            if (this.config.format.sizeAdjust) {
-                this.framePatternSize = bitSyntax.matcher('size:' + this.config.format.size + ', data/binary');
-                this.framePattern = bitSyntax.matcher('data:size/binary, rest/binary');
-            } else {
-                this.framePattern = bitSyntax.matcher('size:' + this.config.format.size + ', data:size/binary, rest/binary');
-            }
-        }
+        this.codec = undefined;
         if (this.config.format.codec) {
             var codecType = typeof(this.config.format.codec);
             var Codec;
@@ -63,6 +55,18 @@ TcpPort.prototype.init = function init() {
                 Codec = codec.get(this.config.format.codec);
             }
             this.codec = new Codec(this.config.format);
+        }
+        if (this.codec && (this.codec.frameReducer) && (this.codec.frameBuilder)) {
+            this.frameBuilder = this.codec.frameBuilder;
+            this.framePattern = this.codec.frameReducer;
+        } else  if (this.config.format.size) {
+            this.frameBuilder = bitSyntax.builder('size:' + this.config.format.size + ', data:size/binary');
+            if (this.config.format.sizeAdjust) {
+                this.framePatternSize = bitSyntax.matcher('size:' + this.config.format.size + ', data/binary');
+                this.framePattern = bitSyntax.matcher('data:size/binary, rest/binary');
+            } else {
+                this.framePattern = bitSyntax.matcher('size:' + this.config.format.size + ', data:size/binary, rest/binary');
+            }
         }
     }
 };
