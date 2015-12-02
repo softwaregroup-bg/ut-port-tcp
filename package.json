@@ -7,6 +7,9 @@
     "ut-bitsyntax": "~5.0.3",
     "ut-codec": "~5.0.3"
   },
+  "devDependencies": {
+    "ut-tools": "~0.5.1"
+  },
   "peerDependencies": {
     "ut-bus": "~5.3.6"
   },
@@ -14,6 +17,10 @@
     "registry": "http://npm.softwaregroup-bg.com:5001"
   },
   "description": "UT port tcp module",
+  "scripts": {
+    "lint": "ut-lint .",
+    "test": "npm run lint"
+  },
   "repository": {
     "type": "git",
     "url": "git@git.softwaregroup-bg.com:ut5/ut-port-tcp.git"

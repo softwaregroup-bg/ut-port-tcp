@@ -46,7 +46,7 @@ TcpPort.prototype.init = function init() {
     if (this.config.format) {
         this.codec = undefined;
         if (this.config.format.codec) {
-            var codecType = typeof(this.config.format.codec);
+            var codecType = typeof this.config.format.codec;
             var Codec;
 
             if (codecType === 'function') {
@@ -59,7 +59,7 @@ TcpPort.prototype.init = function init() {
         if (this.codec && (this.codec.frameReducer) && (this.codec.frameBuilder)) {
             this.frameBuilder = this.codec.frameBuilder;
             this.framePattern = this.codec.frameReducer;
-        } else  if (this.config.format.size) {
+        } else if (this.config.format.size) {
             this.frameBuilder = bitSyntax.builder('size:' + this.config.format.size + ', data:size/binary');
             if (this.config.format.sizeAdjust) {
                 this.framePatternSize = bitSyntax.matcher('size:' + this.config.format.size + ', data/binary');
@@ -92,7 +92,6 @@ TcpPort.prototype.start = function start(callback) {
         this.server.listen(this.config.port);
     } else {
         var connProp;
-        var options = {};
         if (this.config.ssl) {
             connProp = {
                 host: this.config.host,
