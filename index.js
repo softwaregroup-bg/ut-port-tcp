@@ -112,10 +112,11 @@ TcpPort.prototype.start = function start(callback) {
             var context = {trace: 0, callbacks: {}, conId: this.conCount};
             var streams = this.pipe(stream, context);
             port.receive(streams[2], [{}, {opcode: 'connected', mtid: 'notification', context: context}]);
-        }.bind(this)).connect(connProp)
-            .on('error', function(err) {
-                this.log && this.log.error && this.log.error(err);
-            }.bind(this));
+        }.bind(this))
+        .on('error', function(err) {
+            this.log && this.log.error && this.log.error(err);
+        }.bind(this))
+        .connect(connProp);
     }
 };
 
