@@ -8,21 +8,31 @@
     "ut-codec": "~5.4.7"
   },
   "devDependencies": {
-    "ut-tools": "~1.0.0"
+    "ut-tools": "^5.3.1"
   },
   "peerDependencies": {
     "ut-bus": "~5.3.6"
   },
   "publishConfig": {
-    "registry": "http://npm.softwaregroup-bg.com:5001"
+    "registry": "https://nexus.softwaregroup-bg.com/repository/npm-internal"
   },
   "description": "UT port tcp module",
   "scripts": {
     "lint": "ut-lint .",
-    "pre-commit": "npm run lint",
-    "pre-release": "ut-pre-release",
     "release": "ut-release",
-    "post-release": "ut-post-release"
+    "changelog": "ut-changelog",
+    "check": "ut-check",
+    "cover": "ut-cover",
+    "lint-js": "ut-lint-js .",
+    "postpublish": "ut-postpublish",
+    "postversion": "ut-postversion",
+    "precommit": "ut-precommit",
+    "prepublish": "ut-prepublish",
+    "prepush": "ut-prepush",
+    "pretest": "ut-pretest",
+    "preversion": "ut-preversion",
+    "test": "ut-test",
+    "version": "ut-version"
   },
   "repository": {
     "type": "git",
