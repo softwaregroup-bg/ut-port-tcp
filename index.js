@@ -2,7 +2,6 @@ var net = require('net');
 var bitSyntax = require('ut-bitsyntax');
 var Port = require('ut-bus/port');
 var util = require('util');
-var codec = require('ut-codec');
 var reconnect = null;
 
 function TcpPort() {
@@ -52,7 +51,9 @@ TcpPort.prototype.init = function init() {
             if (codecType === 'function') {
                 Codec = this.config.format.codec;
             } else if (codecType === 'string') {
-                Codec = codec.get(this.config.format.codec);
+                // Codec = codec.get(this.config.format.codec);
+                throw new Error('Use format.codec:require(\'ut-codec/' + this.config.format.codec + '\') instead of ' +
+                    'format.codec:\'' + this.config.format.codec + '\'');
             }
             this.codec = new Codec(this.config.format);
         }

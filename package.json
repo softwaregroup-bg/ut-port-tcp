@@ -4,14 +4,13 @@
   "dependencies": {
     "lodash": "3.10.1",
     "reconnect-core": "1.0.0",
-    "ut-bitsyntax": "~5.0.3",
-    "ut-codec": "~5.4.7"
+    "ut-bitsyntax": "~5.0.13"
   },
   "devDependencies": {
     "ut-tools": "^5.3.1"
   },
   "peerDependencies": {
-    "ut-bus": "~5.3.6"
+    "ut-bus": "~5.3.28"
   },
   "publishConfig": {
     "registry": "https://nexus.softwaregroup-bg.com/repository/npm-internal"
