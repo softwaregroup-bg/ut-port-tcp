@@ -7,7 +7,7 @@
     "ut-bitsyntax": "~5.0.13"
   },
   "devDependencies": {
-    "ut-tools": "^5.3.1"
+    "ut-tools": "^5.3.13"
   },
   "peerDependencies": {
     "ut-bus": "~5.3.28"
@@ -31,7 +31,9 @@
     "pretest": "ut-pretest",
     "preversion": "ut-preversion",
     "test": "ut-test",
-    "version": "ut-version"
+    "version": "ut-version",
+    "jenkins": "ut-jenkins",
+    "gitlab": "ut-gitlab"
   },
   "repository": {
     "type": "git",
