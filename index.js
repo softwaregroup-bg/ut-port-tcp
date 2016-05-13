@@ -6,6 +6,7 @@ var reconnect = null;
 
 function TcpPort() {
     Port.call(this);
+    this.re = null;
     this.conn = null;
     this.server = null;
     this.conCount = 0;
@@ -108,7 +109,7 @@ TcpPort.prototype.start = function start(callback) {
         if (this.config.localPort) {
             connProp.localPort = this.config.localPort;
         }
-        reconnect(function(stream) {
+        this.re = reconnect(function(stream) {
             this.incConnections();
             var context = {trace: 0, callbacks: {}, conId: this.conCount};
             var streams = this.pipe(stream, context);
@@ -119,6 +120,11 @@ TcpPort.prototype.start = function start(callback) {
         }.bind(this))
         .connect(connProp);
     }
+};
+
+TcpPort.prototype.stop = function stop() {
+    this.re && this.re.disconnect();
+    Port.prototype.stop.apply(this, Array.prototype.slice.call(arguments));
 };
 
 module.exports = TcpPort;
