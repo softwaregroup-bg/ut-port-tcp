@@ -1,3 +1,13 @@
+<a name="5.3.15"></a>
+## [5.3.15](https://git.softwaregroup-bg.com/ut5/ut-port-tcp/compare/v5.3.14...v5.3.15) (2016-05-13)
+
+
+### Bug Fixes
+
+* close connection on port.stop ([b5664bb](https://git.softwaregroup-bg.com/ut5/ut-port-tcp/commit/b5664bb))
+
+
+
 <a name="5.3.14"></a>
 ## [5.3.14](https://git.softwaregroup-bg.com/ut5/ut-port-tcp/compare/v5.3.13...v5.3.14) (2016-04-15)
 
