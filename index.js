@@ -1,4 +1,5 @@
 var net = require('net');
+var through2 = require('through2');
 var bitSyntax = require('ut-bitsyntax');
 var Port = require('ut-bus/port');
 var util = require('util');
@@ -115,6 +116,11 @@ TcpPort.prototype.start = function start(callback) {
             var streams = this.pipe(stream, context);
             port.receive(streams[2], [{}, {opcode: 'connected', mtid: 'notification', context: context}]);
         }.bind(this))
+        .on('disconnect', function() {
+            var context = {trace: 0, callbacks: {}};
+            var nullStream = through2({objectMode: true}, nullWriter);
+            port.receive(nullStream, [{}, {opcode: 'disconnected', mtid: 'notification', context: context}]);
+        })
         .on('error', function(err) {
             this.log && this.log.error && this.log.error(err);
         }.bind(this))
@@ -126,5 +132,9 @@ TcpPort.prototype.stop = function stop() {
     this.re && this.re.disconnect();
     Port.prototype.stop.apply(this, Array.prototype.slice.call(arguments));
 };
+
+function nullWriter(chunk, encoding, cb) {
+    cb();
+}
 
 module.exports = TcpPort;
