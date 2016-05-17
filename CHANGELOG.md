@@ -1,3 +1,13 @@
+<a name="5.3.16"></a>
+## [5.3.16](https://git.softwaregroup-bg.com/ut5/ut-port-tcp/compare/v5.3.15...v5.3.16) (2016-05-17)
+
+
+### Bug Fixes
+
+* **eslint:** Add through2 package to TCP, since it is required directly. ([7698a8c](https://git.softwaregroup-bg.com/ut5/ut-port-tcp/commit/7698a8c))
+
+
+
 <a name="5.3.15"></a>
 ## [5.3.15](https://git.softwaregroup-bg.com/ut5/ut-port-tcp/compare/v5.3.14...v5.3.15) (2016-05-13)
 
