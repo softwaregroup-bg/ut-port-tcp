@@ -1,3 +1,13 @@
+<a name="5.3.17"></a>
+## [5.3.17](https://git.softwaregroup-bg.com/ut5/ut-port-tcp/compare/v5.3.16...v5.3.17) (2016-05-25)
+
+
+### Bug Fixes
+
+* **global-variable:** Variable reconnect is used as global is illegally overwritten when more than one TCP port is used. ([8b3785e](https://git.softwaregroup-bg.com/ut5/ut-port-tcp/commit/8b3785e))
+
+
+
 <a name="5.3.16"></a>
 ## [5.3.16](https://git.softwaregroup-bg.com/ut5/ut-port-tcp/compare/v5.3.15...v5.3.16) (2016-05-17)
 
