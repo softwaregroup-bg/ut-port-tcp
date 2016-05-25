@@ -3,7 +3,6 @@ var through2 = require('through2');
 var bitSyntax = require('ut-bitsyntax');
 var Port = require('ut-bus/port');
 var util = require('util');
-var reconnect = null;
 
 function TcpPort() {
     Port.call(this);
@@ -42,7 +41,7 @@ TcpPort.prototype.init = function init() {
 
     this.bytesSent = this.counter && this.counter('counter', 'bs', 'Bytes sent');
     this.bytesReceived = this.counter && this.counter('counter', 'br', 'Bytes received');
-    reconnect = this.config.ssl ? require('ut-bus/reconnect-tls') : require('ut-bus/reconnect-net');
+    this._reconnect = this.config.ssl ? require('ut-bus/reconnect-tls') : require('ut-bus/reconnect-net');
 
     if (this.config.format) {
         this.codec = undefined;
@@ -110,7 +109,7 @@ TcpPort.prototype.start = function start(callback) {
         if (this.config.localPort) {
             connProp.localPort = this.config.localPort;
         }
-        this.re = reconnect(function(stream) {
+        this.re = this._reconnect(function(stream) {
             this.incConnections();
             var context = {trace: 0, callbacks: {}, conId: this.conCount};
             var streams = this.pipe(stream, context);
