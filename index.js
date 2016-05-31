@@ -128,7 +128,10 @@ TcpPort.prototype.start = function start(callback) {
 };
 
 TcpPort.prototype.stop = function stop() {
-    this.re && this.re.disconnect();
+    if (this.re) {
+        var e = this.re.disconnect();
+        e && e._connection && e._connection.unref();
+    }
     Port.prototype.stop.apply(this, Array.prototype.slice.call(arguments));
 };
 
