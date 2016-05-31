@@ -1,3 +1,13 @@
+<a name="5.3.18"></a>
+## [5.3.18](https://git.softwaregroup-bg.com/ut5/ut-port-tcp/compare/v5.3.17...v5.3.18) (2016-05-31)
+
+
+### Bug Fixes
+
+* fix disconnect by valling unref on the socket ([1977840](https://git.softwaregroup-bg.com/ut5/ut-port-tcp/commit/1977840))
+
+
+
 <a name="5.3.17"></a>
 ## [5.3.17](https://git.softwaregroup-bg.com/ut5/ut-port-tcp/compare/v5.3.16...v5.3.17) (2016-05-25)
 
