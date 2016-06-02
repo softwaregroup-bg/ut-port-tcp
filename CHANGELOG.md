@@ -1,3 +1,13 @@
+<a name="5.3.19"></a>
+## [5.3.19](https://git.softwaregroup-bg.com/ut5/ut-port-tcp/compare/v5.3.18...v5.3.19) (2016-06-02)
+
+
+### Features
+
+* add support for importing modules ([02bfdf0](https://git.softwaregroup-bg.com/ut5/ut-port-tcp/commit/02bfdf0))
+
+
+
 <a name="5.3.18"></a>
 ## [5.3.18](https://git.softwaregroup-bg.com/ut5/ut-port-tcp/compare/v5.3.17...v5.3.18) (2016-05-31)
 
