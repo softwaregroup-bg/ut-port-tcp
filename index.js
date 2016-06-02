@@ -81,6 +81,7 @@ TcpPort.prototype.incConnections = function incConnections() {
 };
 
 TcpPort.prototype.start = function start(callback) {
+    this.bus && this.bus.importMethods(this.config, this.config.imports, undefined, this);
     Port.prototype.start.apply(this, arguments);
     this.connRouter = this.config.connRouter;
     this.socketTimeOut = this.config.socketTimeOut || this.socketTimeOut;
