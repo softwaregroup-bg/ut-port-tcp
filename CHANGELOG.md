@@ -1,3 +1,13 @@
+<a name="5.3.20"></a>
+## [5.3.20](https://git.softwaregroup-bg.com/ut5/ut-port-tcp/compare/v5.3.19...v5.3.20) (2016-06-08)
+
+
+### Bug Fixes
+
+* upgrade lodash ([30b9f2f](https://git.softwaregroup-bg.com/ut5/ut-port-tcp/commit/30b9f2f))
+
+
+
 <a name="5.3.19"></a>
 ## [5.3.19](https://git.softwaregroup-bg.com/ut5/ut-port-tcp/compare/v5.3.18...v5.3.19) (2016-06-02)
 
