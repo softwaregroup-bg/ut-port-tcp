@@ -2,7 +2,7 @@
   "name": "ut-port-tcp",
   "version": "5.3.19",
   "dependencies": {
-    "lodash": "3.10.1",
+    "lodash.assign": "4.0.9",
     "reconnect-core": "1.0.0",
     "through2": "2.0.1",
     "ut-bitsyntax": "~5.0.13"
