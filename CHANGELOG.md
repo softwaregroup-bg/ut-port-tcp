@@ -1,3 +1,13 @@
+<a name="5.4.1"></a>
+## [5.4.1](https://git.softwaregroup-bg.com/ut5/ut-port-tcp/compare/v5.3.21...v5.4.1) (2016-07-11)
+
+
+### Features
+
+* upgrade minor version ([a83dfc9](https://git.softwaregroup-bg.com/ut5/ut-port-tcp/commit/a83dfc9))
+
+
+
 <a name="5.3.21"></a>
 ## [5.3.21](https://git.softwaregroup-bg.com/ut5/ut-port-tcp/compare/v5.3.20...v5.3.21) (2016-07-11)
 
