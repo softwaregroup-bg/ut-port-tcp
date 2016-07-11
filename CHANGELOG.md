@@ -1,3 +1,13 @@
+<a name="5.3.21"></a>
+## [5.3.21](https://git.softwaregroup-bg.com/ut5/ut-port-tcp/compare/v5.3.20...v5.3.21) (2016-07-11)
+
+
+### Features
+
+* upgrade dependencies ([43b1cbc](https://git.softwaregroup-bg.com/ut5/ut-port-tcp/commit/43b1cbc))
+
+
+
 <a name="5.3.20"></a>
 ## [5.3.20](https://git.softwaregroup-bg.com/ut5/ut-port-tcp/compare/v5.3.19...v5.3.20) (2016-06-08)
 
