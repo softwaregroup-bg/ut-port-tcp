@@ -1,3 +1,14 @@
+<a name="5.4.3"></a>
+## [5.4.3](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v5.4.2...v5.4.3) (2016-08-12)
+
+
+### Bug Fixes
+
+* publish to npm ([52e6967](https://github.com/softwaregroup-bg/ut-port-tcp/commit/52e6967))
+* update dependencies ([cc09c58](https://github.com/softwaregroup-bg/ut-port-tcp/commit/cc09c58))
+
+
+
 <a name="5.4.2"></a>
 ## [5.4.2](https://git.softwaregroup-bg.com/ut5/ut-port-tcp/compare/v5.4.1...v5.4.2) (2016-08-02)
 
