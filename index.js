@@ -85,7 +85,6 @@ TcpPort.prototype.start = function start(callback) {
     Port.prototype.start.apply(this, arguments);
     this.connRouter = this.config.connRouter;
     this.socketTimeOut = this.config.socketTimeOut || this.socketTimeOut;
-    var port = this;
 
     if (this.config.listen) {
         this.server = net.createServer(function(c) {
@@ -110,20 +109,20 @@ TcpPort.prototype.start = function start(callback) {
         if (this.config.localPort) {
             connProp.localPort = this.config.localPort;
         }
-        this.re = this._reconnect(function(stream) {
+        this.re = this._reconnect((stream) => {
             this.incConnections();
             var context = {trace: 0, callbacks: {}, conId: this.conCount};
             var streams = this.pipe(stream, context);
-            port.receive(streams[2], [{}, {opcode: 'connected', mtid: 'notification', context: context}]);
-        }.bind(this))
-        .on('disconnect', function() {
+            this.receive(streams[2], [{}, {opcode: 'connected', mtid: 'notification', context: context, buf: new Buffer(1024 * 1024 * 10)}]);
+        })
+        .on('disconnect', () => {
             var context = {trace: 0, callbacks: {}};
             var nullStream = through2({objectMode: true}, nullWriter);
-            port.receive(nullStream, [{}, {opcode: 'disconnected', mtid: 'notification', context: context}]);
+            this.receive(nullStream, [{}, {opcode: 'disconnected', mtid: 'notification', context: context}]);
         })
-        .on('error', function(err) {
+        .on('error', (err) => {
             this.log && this.log.error && this.log.error(err);
-        }.bind(this))
+        })
         .connect(connProp);
     }
 };
