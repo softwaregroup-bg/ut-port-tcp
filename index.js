@@ -113,7 +113,7 @@ TcpPort.prototype.start = function start(callback) {
             this.incConnections();
             var context = {trace: 0, callbacks: {}, conId: this.conCount};
             var streams = this.pipe(stream, context);
-            this.receive(streams[2], [{}, {opcode: 'connected', mtid: 'notification', context: context, buf: new Buffer(1024 * 1024 * 10)}]);
+            this.receive(streams[2], [{}, {opcode: 'connected', mtid: 'notification', context: context}]);
         })
         .on('disconnect', () => {
             var context = {trace: 0, callbacks: {}};
