@@ -1,3 +1,13 @@
+<a name="5.4.6"></a>
+## [5.4.6](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v5.4.5...v5.4.6) (2016-10-05)
+
+
+### Bug Fixes
+
+* correct receive order ([5f33e22](https://github.com/softwaregroup-bg/ut-port-tcp/commit/5f33e22))
+
+
+
 <a name="5.4.5"></a>
 ## [5.4.5](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v5.4.4...v5.4.5) (2016-10-04)
 
