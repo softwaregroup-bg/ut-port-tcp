@@ -1,3 +1,5 @@
+'use strict';
+
 var net = require('net');
 var through2 = require('through2');
 var bitSyntax = require('ut-bitsyntax');
@@ -113,12 +115,12 @@ TcpPort.prototype.start = function start(callback) {
             this.incConnections();
             var context = {trace: 0, callbacks: {}, conId: this.conCount};
             var streams = this.pipe(stream, context);
-            this.receive(streams[2], [{}, {opcode: 'connected', mtid: 'notification', context: context, buf: new Buffer(1024 * 1024 * 10)}]);
+            this.receive(streams[2], [{}, {opcode: 'connected', mtid: 'notification'}], context);
         })
         .on('disconnect', () => {
             var context = {trace: 0, callbacks: {}};
             var nullStream = through2({objectMode: true}, nullWriter);
-            this.receive(nullStream, [{}, {opcode: 'disconnected', mtid: 'notification', context: context}]);
+            this.receive(nullStream, [{}, {opcode: 'disconnected', mtid: 'notification'}], context);
         })
         .on('error', (err) => {
             this.log && this.log.error && this.log.error(err);
