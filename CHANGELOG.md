@@ -1,3 +1,13 @@
+<a name="5.4.5"></a>
+## [5.4.5](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v5.4.4...v5.4.5) (2016-10-04)
+
+
+### Bug Fixes
+
+* to es6 syntax ([524dc8f](https://github.com/softwaregroup-bg/ut-port-tcp/commit/524dc8f))
+
+
+
 <a name="5.4.4"></a>
 ## [5.4.4](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v5.4.3...v5.4.4) (2016-09-20)
 
