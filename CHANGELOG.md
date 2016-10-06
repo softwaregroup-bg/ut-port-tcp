@@ -1,3 +1,8 @@
+<a name="5.4.7"></a>
+## [5.4.7](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v5.4.6...v5.4.7) (2016-10-06)
+
+
+
 <a name="5.4.6"></a>
 ## [5.4.6](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v5.4.5...v5.4.6) (2016-10-05)
 
