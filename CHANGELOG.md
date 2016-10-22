@@ -1,3 +1,13 @@
+<a name="5.4.8"></a>
+## [5.4.8](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v5.4.7...v5.4.8) (2016-10-22)
+
+
+### Bug Fixes
+
+* close during stop when in listening mode ([818f1e5](https://github.com/softwaregroup-bg/ut-port-tcp/commit/818f1e5))
+
+
+
 <a name="5.4.7"></a>
 ## [5.4.7](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v5.4.6...v5.4.7) (2016-10-06)
 
