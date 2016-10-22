@@ -134,6 +134,11 @@ TcpPort.prototype.stop = function stop() {
         var e = this.re.disconnect();
         e && e._connection && e._connection.unref();
     }
+    if (this.server) {
+        this.server.close();
+        this.server.unref();
+        this.server = null;
+    }
     Port.prototype.stop.apply(this, Array.prototype.slice.call(arguments));
 };
 
