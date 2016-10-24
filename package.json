@@ -1,6 +1,6 @@
 {
   "name": "ut-port-tcp",
-  "version": "5.4.8",
+  "version": "5.4.9",
   "dependencies": {
     "lodash.assign": "4.1.0",
     "reconnect-core": "1.3.0",
