@@ -1,3 +1,13 @@
+<a name="5.5.0"></a>
+# [5.5.0](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v5.4.10...v5.5.0) (2016-10-27)
+
+
+### Features
+
+* notification for server connection ([b412933](https://github.com/softwaregroup-bg/ut-port-tcp/commit/b412933))
+
+
+
 <a name="5.4.10"></a>
 ## [5.4.10](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v5.4.9...v5.4.10) (2016-10-24)
 
