@@ -89,9 +89,11 @@ TcpPort.prototype.start = function start(callback) {
     this.socketTimeOut = this.config.socketTimeOut || this.socketTimeOut;
 
     if (this.config.listen) {
-        this.server = net.createServer(function(c) {
+        this.server = net.createServer(function(stream) {
             this.incConnections();
-            this.pipe(c, {trace: 0, callbacks: {}, conId: this.conCount});
+            var context = {trace: 0, callbacks: {}, conId: this.conCount};
+            var streams = this.pipe(stream, context);
+            this.receive(streams[2], [{}, {opcode: 'connected', mtid: 'notification'}], context);
         }.bind(this));
         this.server.listen(this.config.port);
     } else {
