@@ -1,3 +1,13 @@
+<a name="5.6.0"></a>
+# [5.6.0](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v5.5.0...v5.6.0) (2016-11-05)
+
+
+### Features
+
+* conId is not needed in client mode ([2832328](https://github.com/softwaregroup-bg/ut-port-tcp/commit/2832328))
+
+
+
 <a name="5.5.0"></a>
 # [5.5.0](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v5.4.10...v5.5.0) (2016-10-27)
 
