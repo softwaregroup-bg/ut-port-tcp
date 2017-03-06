@@ -1,16 +1,7 @@
-# **TCP Port:** `ut-port-tcp` #
+# **TCP Port:** `ut-port-tcp`
+
 The purpose of this port is for establishing TCP connections to remote network locations or to represent a TCP server itself.
 It can be configured for standard socket communication or secured socket communication (TLS/SSL).
-
-### **Technological Dependencies** ###
-
- - `when.js` - [GitHub Official Page](https://github.com/cujojs/when)
- - `ut-bitsyntax` - TODO add link to documentation
- - `ut-bus/port` - TODO add link to documentation
- - `ut-codec` - TODO add link to documentation
- - `through2` - [GitHub Official Page](https://github.com/rvagg/through2)
- - `reconnect-net` - [GitHub Official Page](https://github.com/juliangruber/reconnect-net)
- - `reconnect-tls` - [GitHub Official Page](https://github.com/fgascon/reconnect-tls)
 
 In the UT5 implementations the TCP port is initialized in the following manner:
 
@@ -72,6 +63,7 @@ represents the parser of the communication (T24, Payshield, NDC, etc.).
 When working with this port it is important to keep in mind that you have to "remember" the requests and to match them to the appropriate responses
 because of the asynchronicity of the port. Consider the following solution to this problem:
 
+```javascript
     var tracer = [];
     var sequence = 0;
     module.exports = {
@@ -92,6 +84,7 @@ because of the asynchronicity of the port. Consider the following solution to th
             return msg;
         }
     }
+```
 
 The code from above ensures that the callback from the request to the TCP port will persist during the waiting time for the response.
 In the `send` we push the callback of the request and store it by its unique sequence number. Once the response comes we check the sequence

@@ -1,3 +1,13 @@
+<a name="5.7.1"></a>
+## [5.7.1](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v5.7.0...v5.7.1) (2017-02-27)
+
+
+### Bug Fixes
+
+* dependencies ([4d0b59c](https://github.com/softwaregroup-bg/ut-port-tcp/commit/4d0b59c))
+
+
+
 <a name="5.7.0"></a>
 # [5.7.0](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v5.6.0...v5.7.0) (2016-12-23)
 
