@@ -139,13 +139,12 @@ TcpPort.prototype.start = function start() {
         }
 
         this.server.on('close', () => {
-            this.connections.clear();
             notify('close', through2({objectMode: true}, nullWriter), {trace: 0, callbacks: {}});
         })
         .on('error', err => {
             this.log && this.log.error && this.log.error(err);
-        });
-        this.server.listen(this.config.port);
+        })
+        .listen(this.config.port);
     } else {
         var connProp;
         if (this.config.ssl) {
