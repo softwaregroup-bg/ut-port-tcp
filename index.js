@@ -1,10 +1,9 @@
 'use strict';
-
-var net = require('net');
-var through2 = require('through2');
-var bitSyntax = require('ut-bitsyntax');
-var Port = require('ut-bus/port');
-var util = require('util');
+const through2 = require('through2');
+const bitSyntax = require('ut-bitsyntax');
+const Port = require('ut-bus/port');
+const util = require('util');
+const {readFileSync} = require('fs');
 
 function TcpPort() {
     Port.call(this);
@@ -24,7 +23,7 @@ function TcpPort() {
         host: '127.0.0.1',
         port: null,
         listen: false,
-        ssl: false,
+        ssl: null,
         localPort: null,
         connRouter: null,
         format: {
@@ -120,8 +119,27 @@ TcpPort.prototype.start = function start() {
     };
 
     if (this.config.listen) {
-        this.server = net.createServer(onConnection)
-        .on('close', () => {
+        if (this.config.ssl) {
+            const opts = Object.assign({
+                requestCert: true,
+                rejectUnauthorized: true
+            }, this.config.ssl);
+            if (this.config.ssl.keyPath) {
+                opts.key = readFileSync(this.config.ssl.keyPath, 'utf8');
+            }
+            if (this.config.ssl.certPath) {
+                opts.cert = readFileSync(this.config.ssl.certPath, 'utf8');
+            }
+            if (Array.isArray(this.config.ssl.caPaths)) {
+                opts.ca = this.config.ssl.caPaths.map(file => readFileSync(file, 'utf8'));
+            }
+            this.server = require('tls').createServer(opts, onConnection);
+        } else {
+            this.server = require('net').createServer(onConnection);
+        }
+
+        this.server.on('close', () => {
+            this.connections.clear();
             notify('close', through2({objectMode: true}, nullWriter), {trace: 0, callbacks: {}});
         })
         .on('error', err => {
