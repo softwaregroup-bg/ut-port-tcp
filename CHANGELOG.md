@@ -1,3 +1,13 @@
+<a name="5.8.0"></a>
+# [5.8.0](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v5.7.3...v5.8.0) (2017-06-20)
+
+
+### Features
+
+* added ssl server support ([0528c08](https://github.com/softwaregroup-bg/ut-port-tcp/commit/0528c08))
+
+
+
 <a name="5.7.3"></a>
 ## [5.7.3](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v5.7.2...v5.7.3) (2017-03-08)
 
