@@ -3,7 +3,7 @@
 The purpose of this port is for establishing TCP connections to remote network locations or to represent a TCP server itself.
 It can be configured for standard socket communication or secured socket communication (TLS/SSL).
 
-In the UT5 implementations the TCP port is initialized in the following manner:
+In the UT5 implementations the TCP client port is initialized in the following manner:
 
 ```javascript
     module.exports = {
@@ -18,6 +18,42 @@ In the UT5 implementations the TCP port is initialized in the following manner:
         connRouter: function(queues) {//connection router example
             var q = Object.keys(queues);
             return q[0];
+        },
+        namespace: ['t24'],
+        format: {
+            size: '32/integer',
+            codec: 'plain',
+            sizeAdjust: 4 //this us used especially in smpp port where message size is telling the total size of the message (header message length + actual message) not only length of the message itself
+        },
+        receive: function(msg) {
+            return msg;
+        },
+        send: function(msg) {
+            return msg;
+        }
+    }
+```
+
+TCP server
+
+```javascript
+    module.exports = {
+        id: 't24',
+        type: 'tcp',
+        logLevel: 'trace',
+        port: '<LOCAL_PORT>',
+        listen: true,
+        socketTimeOut: 10000,//how much time to wait without communication until closing connection, defaults to "forever"
+        ssl: { // For non-secure connections this can be undefined
+            // Pre-loaded keys and certificates
+            key: fs.readFileSync('key.pem'),
+            cert: fs.readFileSync('cert.pem'),
+            ca: [fs.readFileSync('cert.pem')]
+
+            // If paths are provided TCP port will read file contents
+            keyPath: 'path-to-key-file.pem',
+            certPath: 'path-to-cert-file.pem',
+            ca: ['path-to-cert-file.pem']
         },
         namespace: ['t24'],
         format: {
