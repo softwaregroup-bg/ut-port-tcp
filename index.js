@@ -40,8 +40,8 @@ util.inherits(TcpPort, Port);
 TcpPort.prototype.init = function init() {
     Port.prototype.init.apply(this, arguments);
 
-    this.bytesSent = this.counter && this.counter('counter', 'bs', 'Bytes sent');
-    this.bytesReceived = this.counter && this.counter('counter', 'br', 'Bytes received');
+    this.bytesSent = this.counter && this.counter('counter', 'bs', 'Bytes sent', 300);
+    this.bytesReceived = this.counter && this.counter('counter', 'br', 'Bytes received', 300);
     this._reconnect = this.config.ssl ? require('ut-bus/reconnect-tls') : require('ut-bus/reconnect-net');
 
     if (this.config.format) {
@@ -88,7 +88,7 @@ TcpPort.prototype.start = function start() {
     this.socketTimeOut = this.config.socketTimeOut || this.socketTimeOut;
 
     var notify = (event, stream, context) => {
-        this.log.info && this.log.info({$meta: {mtid: 'event', opcode: 'port.' + event}, context});
+        this.log.info && this.log.info({$meta: {mtid: 'event', opcode: 'port.' + event}, connection: context});
         this.receive(stream, [{}, {opcode: event, mtid: 'notification'}], context);
     };
 
@@ -97,6 +97,7 @@ TcpPort.prototype.start = function start() {
         var context = {
             trace: 0,
             callbacks: {},
+            created: new Date(),
             localAddress: stream.localAddress,
             localPort: stream.localPort,
             remoteAddress: stream.remoteAddress,
