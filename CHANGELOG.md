@@ -1,3 +1,13 @@
+<a name="5.9.0"></a>
+# [5.9.0](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v5.8.0...v5.9.0) (2017-09-28)
+
+
+### Features
+
+* improve logging and counters ([#5](https://github.com/softwaregroup-bg/ut-port-tcp/issues/5)) ([ede22a6](https://github.com/softwaregroup-bg/ut-port-tcp/commit/ede22a6))
+
+
+
 <a name="5.8.0"></a>
 # [5.8.0](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v5.7.3...v5.8.0) (2017-06-20)
 
