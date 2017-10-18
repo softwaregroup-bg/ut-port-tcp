@@ -39,8 +39,8 @@ module.exports = function(Parent) {
         util.inherits(TcpPort, Parent);
     }
 
-    TcpPort.prototype.init = function init() {
-        Parent && Parent.prototype.init.apply(this, arguments);
+    TcpPort.prototype.init = function init(...params) {
+        Parent && Parent.prototype.init.apply(this, params);
 
         this.bytesSent = this.counter && this.counter('counter', 'bs', 'Bytes sent', 300);
         this.bytesReceived = this.counter && this.counter('counter', 'br', 'Bytes received', 300);
@@ -87,9 +87,9 @@ module.exports = function(Parent) {
         }
     };
 
-    TcpPort.prototype.start = function start() {
+    TcpPort.prototype.start = function start(...params) {
         this.bus && this.bus.importMethods(this.config, this.config.imports, undefined, this);
-        Parent && Parent.prototype.start.apply(this, arguments);
+        Parent && Parent.prototype.start.apply(this, params);
         this.connRouter = this.config.connRouter;
 
         let onConnection = stream => {
@@ -164,7 +164,7 @@ module.exports = function(Parent) {
         }
     };
 
-    TcpPort.prototype.stop = function stop() {
+    TcpPort.prototype.stop = function stop(...params) {
         if (this.re) {
             let e = this.re.disconnect();
             e && e._connection && e._connection.unref();
@@ -174,7 +174,7 @@ module.exports = function(Parent) {
             this.server.unref();
             this.server = null;
         }
-        Parent && Parent.prototype.stop.apply(this, Array.prototype.slice.call(arguments));
+        Parent && Parent.prototype.stop.apply(this, params);
     };
 
     return TcpPort;
