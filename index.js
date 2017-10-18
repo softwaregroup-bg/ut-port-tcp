@@ -17,7 +17,7 @@ module.exports = function(Parent) {
         this.connRouter = null;
         this.config = merge({
             id: null,
-            logLevel: '',
+            logLevel: 'info',
             type: 'tcp',
             host: '127.0.0.1',
             port: null,
