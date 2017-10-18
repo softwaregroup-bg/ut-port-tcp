@@ -68,7 +68,7 @@ module.exports = function(Parent) {
                 this.framePattern = this.codec.frameReducer;
             } else if (this.config.format.size) {
                 this.frameBuilder = bitSyntax.builder('size:' + this.config.format.size + ', data:size/binary');
-                if (this.config.format.sizeAdjust) {
+                if (this.config.format.sizeAdjust || this.config.maxReceiveBuffer) {
                     this.framePatternSize = bitSyntax.matcher('size:' + this.config.format.size + ', data/binary');
                     this.framePattern = bitSyntax.matcher('data:size/binary, rest/binary');
                 } else {
@@ -76,6 +76,8 @@ module.exports = function(Parent) {
                 }
             }
         }
+        this.config.maxReceiveBuffer = parseInt(this.config.maxReceiveBuffer, 10) || 0;
+        !this.config.maxReceiveBuffer && this.log.warn && this.log.warn('Missing maxReceiveBuffer in configuration');
     };
 
     TcpPort.prototype.incConnections = function incConnections() {
