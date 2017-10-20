@@ -4,9 +4,9 @@ const merge = require('lodash.merge');
 const util = require('util');
 const {readFileSync} = require('fs');
 
-module.exports = function(Parent) {
+module.exports = function({parent}) {
     function TcpPort({config}) {
-        Parent && Parent.apply(this, arguments);
+        parent && parent.apply(this, arguments);
         this.re = null;
         this.conn = null;
         this.server = null;
@@ -35,12 +35,12 @@ module.exports = function(Parent) {
         }, (config || {}));
     }
 
-    if (Parent) {
-        util.inherits(TcpPort, Parent);
+    if (parent) {
+        util.inherits(TcpPort, parent);
     }
 
     TcpPort.prototype.init = function init(...params) {
-        Parent && Parent.prototype.init.apply(this, params);
+        parent && parent.prototype.init.apply(this, params);
 
         this.bytesSent = this.counter && this.counter('counter', 'bs', 'Bytes sent', 300);
         this.bytesReceived = this.counter && this.counter('counter', 'br', 'Bytes received', 300);
@@ -89,7 +89,7 @@ module.exports = function(Parent) {
 
     TcpPort.prototype.start = function start(...params) {
         this.bus && this.bus.importMethods(this.config, this.config.imports, undefined, this);
-        Parent && Parent.prototype.start.apply(this, params);
+        parent && parent.prototype.start.apply(this, params);
         this.connRouter = this.config.connRouter;
 
         let onConnection = stream => {
@@ -174,7 +174,7 @@ module.exports = function(Parent) {
             this.server.unref();
             this.server = null;
         }
-        Parent && Parent.prototype.stop.apply(this, params);
+        parent && parent.prototype.stop.apply(this, params);
     };
 
     return TcpPort;
