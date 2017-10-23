@@ -54,7 +54,7 @@ TcpPort.prototype.init = function init() {
                 Codec = this.config.format.codec;
             } else if (codecType === 'string') {
                 // Codec = codec.get(this.config.format.codec);
-                throw new Error('Use format.codec:require(\'ut-codec/' + this.config.format.codec + '\') instead of ' +
+                throw new Error('Use format.codec:require(\'ut-codec-' + this.config.format.codec + '\') instead of ' +
                     'format.codec:\'' + this.config.format.codec + '\'');
             }
             this.codec = new Codec(this.config.format);
