@@ -134,4 +134,4 @@ connRouter: function(queues) {//queues is of type Object, it holds all connectio
     var q = Object.keys(queues);
     return q[0];//this method should always return the queue hash
 },
-```
+``` 
