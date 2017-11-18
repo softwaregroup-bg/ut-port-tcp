@@ -57,11 +57,13 @@ module.exports = function({parent}) {
                 if (codecType === 'function') {
                     Codec = this.config.format.codec;
                 } else if (codecType === 'string') {
-                    // Codec = codec.get(this.config.format.codec);
                     throw new Error('Use format.codec:require(\'ut-codec-' + this.config.format.codec + '\') instead of ' +
                         'format.codec:\'' + this.config.format.codec + '\'');
                 }
-                this.codec = new Codec(this.config.format);
+                this.codec = new Codec(Object.assign({
+                    defineError: this.defineError,
+                    getError: this.getError
+                }, this.config.format));
             }
             if (this.codec && (this.codec.frameReducer) && (this.codec.frameBuilder)) {
                 this.frameBuilder = this.codec.frameBuilder;
