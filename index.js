@@ -61,9 +61,10 @@ module.exports = function({parent}) {
                         'format.codec:\'' + this.config.format.codec + '\'');
                 }
                 this.codec = new Codec(Object.assign({
+                    logLevel: this.config.logLevel,
                     defineError: this.defineError,
                     getError: this.getError
-                }, this.config.format));
+                }, this.config.format), null, this.logFactory);
             }
             if (this.codec && (this.codec.frameReducer) && (this.codec.frameBuilder)) {
                 this.frameBuilder = this.codec.frameBuilder;
