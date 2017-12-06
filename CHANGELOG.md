@@ -1,3 +1,28 @@
+<a name="5.10.0"></a>
+# [5.10.0](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v5.9.0...v5.10.0) (2017-10-26)
+
+
+### Bug Fixes
+
+* naming typo ([#7](https://github.com/softwaregroup-bg/ut-port-tcp/issues/7)) ([7ae5228](https://github.com/softwaregroup-bg/ut-port-tcp/commit/7ae5228))
+
+
+### Features
+
+* improve logging and counters ([1fcd5da](https://github.com/softwaregroup-bg/ut-port-tcp/commit/1fcd5da))
+
+
+
+<a name="5.9.0"></a>
+# [5.9.0](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v5.8.0...v5.9.0) (2017-09-28)
+
+
+### Features
+
+* improve logging and counters ([#5](https://github.com/softwaregroup-bg/ut-port-tcp/issues/5)) ([ede22a6](https://github.com/softwaregroup-bg/ut-port-tcp/commit/ede22a6))
+
+
+
 <a name="5.8.0"></a>
 # [5.8.0](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v5.7.3...v5.8.0) (2017-06-20)
 
