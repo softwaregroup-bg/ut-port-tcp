@@ -1,3 +1,13 @@
+<a name="6.0.0"></a>
+# [6.0.0](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v5.10.0...v6.0.0) (2017-12-06)
+
+
+### Features
+
+* allow configuring receive buffer limit ([f0ac09f](https://github.com/softwaregroup-bg/ut-port-tcp/commit/f0ac09f))
+
+
+
 <a name="5.10.0"></a>
 # [5.10.0](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v5.9.0...v5.10.0) (2017-10-26)
 
