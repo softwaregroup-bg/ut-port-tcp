@@ -1,3 +1,13 @@
+<a name="6.0.1"></a>
+## [6.0.1](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v6.0.0...v6.0.1) (2017-12-19)
+
+
+### Bug Fixes
+
+* improve logging ([0830c95](https://github.com/softwaregroup-bg/ut-port-tcp/commit/0830c95))
+
+
+
 <a name="6.0.0"></a>
 # [6.0.0](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v5.10.0...v6.0.0) (2017-12-06)
 
