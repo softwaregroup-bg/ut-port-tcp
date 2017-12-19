@@ -79,7 +79,7 @@ module.exports = function({parent}) {
             }
         }
         this.config.maxReceiveBuffer = parseInt(this.config.maxReceiveBuffer, 10) || 0;
-        !this.config.maxReceiveBuffer && this.log.warn && this.log.warn('Missing maxReceiveBuffer in configuration');
+        !this.config.maxReceiveBuffer && this.log.warn && this.log.warn({$meta: {mtid: 'config', opcode: 'maxReceiveBuffer'}, message: 'Missing maxReceiveBuffer in configuration'});
     };
 
     TcpPort.prototype.incConnections = function incConnections() {
