@@ -55,6 +55,8 @@ TCP server
             certPath: 'path-to-cert-file.pem',
             ca: ['path-to-cert-file.pem']
         },
+        maxConnections: Infinity, // Maximum allowed connections, if the limit is exceeded the server will drop connections
+        connectionDropPolicy: 'oldest', // [oldest | newest] - Specifies which connections to drop upon limit exceed.
         namespace: ['t24'],
         format: {
             size: '32/integer',
