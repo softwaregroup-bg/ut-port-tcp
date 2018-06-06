@@ -101,7 +101,7 @@ module.exports = function({parent}) {
             this.incConnections();
             this.connections.push(stream);
 
-            if (this.conCount > this.config.maxConnections) {
+            if (this.connections.length > this.config.maxConnections) {
                 this.log && this.log.warn && this.log.warn(`Connection limit exceeded (max ${this.config.maxConnections}). Closing ${this.config.connectionDropPolicy} connection.`);
                 switch (this.config.connectionDropPolicy) {
                     case 'oldest':
