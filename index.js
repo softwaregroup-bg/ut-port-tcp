@@ -15,6 +15,7 @@ module.exports = function({parent}) {
         this.frameBuilder = null;
         this.codec = null;
         this.connRouter = null;
+        this.connections = [];
         this.config = merge({
             id: null,
             logLevel: 'info',
@@ -26,6 +27,8 @@ module.exports = function({parent}) {
             localPort: null,
             connRouter: null,
             socketTimeOut: 60000 * 10,
+            maxConnections: 1000,
+            connectionDropPolicy: 'oldest',
             format: {
                 size: null,
                 codec: null,
@@ -96,6 +99,27 @@ module.exports = function({parent}) {
 
         let onConnection = stream => {
             this.incConnections();
+            this.connections.push(stream);
+
+            if (this.connections.length > this.config.maxConnections) {
+                this.log && this.log.warn && this.log.warn(`Connection limit exceeded (max ${this.config.maxConnections}). Closing ${this.config.connectionDropPolicy} connection.`);
+                switch (this.config.connectionDropPolicy) {
+                    case 'oldest':
+                        this.connections.shift().destroy();
+                        break;
+                    case 'newest':
+                        this.connections.pop().destroy();
+                        return;
+                }
+            }
+
+            stream.on('close', () => {
+                let index = this.connections.indexOf(stream);
+                if (index !== -1) {
+                    this.connections.splice(index, 1);
+                }
+            });
+
             let context = {
                 trace: 0,
                 callbacks: {},
