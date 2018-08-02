@@ -1,3 +1,16 @@
+<a name="6.1.0"></a>
+# [6.1.0](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v6.0.1...v6.1.0) (2018-08-02)
+
+
+### Bug Fixes
+
+* add precover script ([1180f17](https://github.com/softwaregroup-bg/ut-port-tcp/commit/1180f17))
+* added connection limit and drop policy ([#11](https://github.com/softwaregroup-bg/ut-port-tcp/issues/11)) ([393851c](https://github.com/softwaregroup-bg/ut-port-tcp/commit/393851c))
+* remove unspecified dependency to ut-bus ([b407985](https://github.com/softwaregroup-bg/ut-port-tcp/commit/b407985))
+* typo ([0f89e65](https://github.com/softwaregroup-bg/ut-port-tcp/commit/0f89e65))
+
+
+
 <a name="6.0.1"></a>
 ## [6.0.1](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v6.0.0...v6.0.1) (2017-12-19)
 
