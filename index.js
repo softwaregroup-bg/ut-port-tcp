@@ -3,6 +3,7 @@ const bitSyntax = require('ut-bitsyntax');
 const merge = require('lodash.merge');
 const util = require('util');
 const {readFileSync} = require('fs');
+const reconnect = require('reconnect-core');
 
 module.exports = function({parent}) {
     function TcpPort({config}) {
@@ -49,7 +50,8 @@ module.exports = function({parent}) {
         this.bytesReceived = this.counter && this.counter('counter', 'br', 'Bytes received', 300);
         this.activeEncodeCount = this.counter && this.counter('gauge', 'en', 'Active encode count');
         this.activeDecodeCount = this.counter && this.counter('gauge', 'de', 'Active decode count');
-        this._reconnect = this.config.ssl ? require('ut-bus/reconnect-tls') : require('ut-bus/reconnect-net');
+        const client = this.config.ssl ? require('tls') : require('net');
+        this._reconnect = reconnect((...args) => client.connect(...args));
 
         if (this.config.format) {
             this.codec = undefined;
