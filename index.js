@@ -51,7 +51,7 @@ module.exports = function({parent}) {
         this.activeEncodeCount = this.counter && this.counter('gauge', 'en', 'Active encode count');
         this.activeDecodeCount = this.counter && this.counter('gauge', 'de', 'Active decode count');
         const client = this.config.ssl ? require('tls') : require('net');
-        this._reconnect = reconnect(...args => client.connect(...args));
+        this._reconnect = reconnect((...args) => client.connect(...args));
 
         if (this.config.format) {
             this.codec = undefined;
