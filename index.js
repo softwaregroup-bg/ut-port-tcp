@@ -67,7 +67,8 @@ module.exports = function({parent}) {
                 }
                 this.codec = new Codec(Object.assign({
                     defineError: this.defineError,
-                    getError: this.getError
+                    getError: this.getError,
+                    fetchErrors: this.fetchErrors
                 }, this.config.format));
             }
             if (this.codec && (this.codec.frameReducer) && (this.codec.frameBuilder)) {
