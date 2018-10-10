@@ -65,11 +65,8 @@ module.exports = function({parent}) {
                     throw new Error('Use format.codec:require(\'ut-codec-' + this.config.format.codec + '\') instead of ' +
                         'format.codec:\'' + this.config.format.codec + '\'');
                 }
-                this.codec = new Codec(Object.assign({
-                    defineError: this.defineError,
-                    getError: this.getError,
-                    fetchErrors: this.fetchErrors
-                }, this.config.format));
+                if (!this.errors || !this.errors.getError) throw new Error('Please use the latest version of ut-port');
+                this.codec = new Codec(Object.assign({}, this.errors, this.config.format));
             }
             if (this.codec && (this.codec.frameReducer) && (this.codec.frameBuilder)) {
                 this.frameBuilder = this.codec.frameBuilder;
