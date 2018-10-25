@@ -2,9 +2,9 @@
   "name": "ut-port-tcp",
   "version": "6.2.0-rc-godfather.1",
   "dependencies": {
-    "lodash.merge": "4.6.0",
+    "lodash.merge": "4.6.1",
     "reconnect-core": "1.3.0",
-    "ut-bitsyntax": "^6.0.15"
+    "ut-bitsyntax": "^6.0.17"
   },
   "devDependencies": {
     "ut-tools": "^5.32.10"
