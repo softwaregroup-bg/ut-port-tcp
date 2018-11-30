@@ -85,7 +85,7 @@ module.exports = function({utPort}) {
             }
         }
         async start() {
-            this.bus && this.bus.importMethods(this.methods, this.config.imports, undefined, this);
+            this.bus && this.bus.attachHandlers(this.methods, this.config.imports, this);
             const result = await super.start(...arguments);
 
             let onConnection = stream => {
