@@ -12,6 +12,13 @@ In the UT5 implementations the TCP client port is initialized in the following m
         logLevel: 'trace',
         host: '<REMOTE_SERVER>',
         port: '<REMOTE_PORT>',
+        // TCP port can open multiple connections
+        // host and port properties are implicitly prepended in this array
+        connections: [{host: '', port: ''}],
+        // When using multiple connections this can help routing the messages
+        // config-order: TCP port iterates the 'connections' array starting from the first element and selects the first open connection
+        // round-robin: TCP port iterates the 'connections' array starting from the connection after the last used and selects the first open.
+        routingMethod: 'config-order|round-robin',
         listen: false,
         socketTimeOut: 10000,//how much time to wait without communication until closing connection, defaults to "forever"
         ssl: true,
@@ -105,19 +112,18 @@ because of the asynchronicity of the port. Consider the following solution to th
     var tracer = [];
     var sequence = 0;
     module.exports = {
-        receive: function(msg) {
-            msg.$$ = {};
-            msg.$$.mtid = 'response';
-            msg.$$.trace = msg.sequence;
-            msg.$$.callback = tracer    [msg.sequence].callback;
+        receive: function(msg, $meta) {
+            $meta.mtid = 'response';
+            $meta.trace = msg.sequence;
+            $meta.callback = tracer[msg.sequence].callback;
             delete tracer[msg.sequence];
             return msg;
         },
-        send: function(msg) {
-            msg.$$.mtid = 'request';
-            sequence++; msg.$$.trace = sequence;
+        send: function(msg, $meta) {
+            $meta.mtid = 'request';
+            $meta.trace = sequence++;
             tracer[sequence] = {
-                callback: msg.$$.callback
+                callback: $meta.callback
             };
             return msg;
         }

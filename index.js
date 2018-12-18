@@ -4,11 +4,12 @@ const merge = require('lodash.merge');
 const util = require('util');
 const {readFileSync} = require('fs');
 const reconnect = require('reconnect-core');
+const routers = require('./routers');
 
 module.exports = function({parent}) {
     function TcpPort({config}) {
         parent && parent.apply(this, arguments);
-        this.re = null;
+        this.re = [];
         this.conn = null;
         this.server = null;
         this.conCount = 0;
@@ -17,6 +18,7 @@ module.exports = function({parent}) {
         this.codec = null;
         this.connRouter = null;
         this.connections = [];
+        this.connectionMap = new Map();
         this.config = merge({
             id: null,
             logLevel: 'info',
@@ -25,9 +27,9 @@ module.exports = function({parent}) {
             port: null,
             listen: false,
             ssl: null,
-            localPort: null,
             connRouter: null,
             socketTimeOut: 60000 * 10,
+            connections: [],
             maxConnections: 1000,
             connectionDropPolicy: 'oldest',
             format: {
@@ -50,8 +52,8 @@ module.exports = function({parent}) {
         this.bytesReceived = this.counter && this.counter('counter', 'br', 'Bytes received', 300);
         this.activeEncodeCount = this.counter && this.counter('gauge', 'en', 'Active encode count');
         this.activeDecodeCount = this.counter && this.counter('gauge', 'de', 'Active decode count');
-        const client = this.config.ssl ? require('tls') : require('net');
-        this._reconnect = reconnect((...args) => client.connect(...args));
+        this.reconnect = reconnect((...args) => require('net').connect(...args));
+        this.reconnectSSL = reconnect((...args) => require('tls').connect(...args));
 
         if (this.config.format) {
             this.codec = undefined;
@@ -97,13 +99,13 @@ module.exports = function({parent}) {
     TcpPort.prototype.start = function start(...params) {
         this.bus && this.bus.importMethods(this.config, this.config.imports, undefined, this);
         parent && parent.prototype.start.apply(this, params);
-        this.connRouter = this.config.connRouter;
+        this.connRouter = routers[this.config.routingMethod] || this.config.connRouter;
 
-        let onConnection = stream => {
+        let onConnection = conId => stream => {
             this.incConnections();
             this.connections.push(stream);
 
-            if (this.connections.length > this.config.maxConnections) {
+            if (this.config.listen && this.connections.length > this.config.maxConnections) {
                 this.log && this.log.warn && this.log.warn(`Connection limit exceeded (max ${this.config.maxConnections}). Closing ${this.config.connectionDropPolicy} connection.`);
                 switch (this.config.connectionDropPolicy) {
                     case 'oldest':
@@ -114,14 +116,6 @@ module.exports = function({parent}) {
                         return;
                 }
             }
-
-            stream.on('close', () => {
-                let index = this.connections.indexOf(stream);
-                if (index !== -1) {
-                    this.connections.splice(index, 1);
-                }
-            });
-
             let context = {
                 trace: 0,
                 callbacks: {},
@@ -129,13 +123,17 @@ module.exports = function({parent}) {
                 localAddress: stream.localAddress,
                 localPort: stream.localPort,
                 remoteAddress: stream.remoteAddress,
-                remotePort: stream.remotePort
+                remotePort: stream.remotePort,
+                conId: conId || this.conCount
             };
-
-            if (this.config.listen) {
-                context.conId = this.conCount;
-            }
-
+            stream.on('close', () => {
+                let index = this.connections.indexOf(stream);
+                if (index !== -1) {
+                    this.connections.splice(index, 1);
+                }
+                this.connectionMap.delete(context.conId);
+            });
+            this.connectionMap.set(context.conId, stream);
             this.pull(stream, context);
         };
 
@@ -154,9 +152,9 @@ module.exports = function({parent}) {
                 if (Array.isArray(this.config.ssl.caPaths)) {
                     opts.ca = this.config.ssl.caPaths.map(file => readFileSync(file, 'utf8'));
                 }
-                this.server = require('tls').createServer(opts, onConnection);
+                this.server = require('tls').createServer(opts, onConnection());
             } else {
-                this.server = require('net').createServer(onConnection);
+                this.server = require('net').createServer(onConnection());
             }
 
             this.server.on('close', () => {
@@ -168,35 +166,27 @@ module.exports = function({parent}) {
             })
             .listen(this.config.port);
         } else {
-            let connProp;
-            if (this.config.ssl) {
-                connProp = {
+            if (this.config.host && this.config.port) {
+                this.config.connections.unshift({
                     host: this.config.host,
                     port: this.config.port,
-                    rejectUnauthorized: false
-                };
-            } else {
-                connProp = {
-                    host: this.config.host,
-                    port: this.config.port
-                };
+                    rejectUnauthorized: !this.config.ssl
+                });
             }
-            if (this.config.localPort) {
-                connProp.localPort = this.config.localPort;
-            }
-            this.re = this._reconnect(onConnection)
-            .on('error', (err) => {
-                this.log && this.log.error && this.log.error(err);
-            })
-            .connect(connProp);
+            this.config.connections.forEach((connProp, i) => {
+                this.re.push(this[connProp.ssl ? 'reconnectSSL' : 'reconnect'](onConnection(i + 1))
+                    .on('error', err => this.log && this.log.error && this.log.error(err))
+                    .connect(connProp)
+                );
+            });
         }
     };
 
     TcpPort.prototype.stop = function stop(...params) {
-        if (this.re) {
-            let e = this.re.disconnect();
+        this.re.forEach(re => {
+            let e = re.disconnect();
             e && e._connection && e._connection.unref();
-        }
+        });
         if (this.server) {
             this.server.close();
             this.server.unref();
