@@ -166,7 +166,7 @@ module.exports = function({parent}) {
             })
             .listen(this.config.port);
         } else {
-            if (this.config.host && this.config.port) {
+            if (this.config.port) {
                 this.config.connections.unshift({
                     host: this.config.host,
                     port: this.config.port,
