@@ -123,17 +123,20 @@ module.exports = function({parent}) {
                 localAddress: stream.localAddress,
                 localPort: stream.localPort,
                 remoteAddress: stream.remoteAddress,
-                remotePort: stream.remotePort,
-                conId: conId || this.conCount
+                remotePort: stream.remotePort
             };
+            conId = conId || this.conCount;
+            if (this.config.listen || this.connRouter) {
+                context.conId = conId;
+            }
             stream.on('close', () => {
                 let index = this.connections.indexOf(stream);
                 if (index !== -1) {
                     this.connections.splice(index, 1);
                 }
-                this.connectionMap.delete(context.conId);
+                this.connectionMap.delete(conId);
             });
-            this.connectionMap.set(context.conId, stream);
+            this.connectionMap.set(conId, stream);
             this.pull(stream, context);
         };
 
