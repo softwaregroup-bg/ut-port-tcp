@@ -19,7 +19,6 @@ module.exports = function({utPort}) {
         get defaults() {
             return {
                 id: null,
-                logLevel: 'info',
                 type: 'tcp',
                 host: '127.0.0.1',
                 port: null,
