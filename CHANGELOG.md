@@ -1,3 +1,23 @@
+# [7.0.0](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v6.1.0...v7.0.0) (2019-02-02)
+
+
+### Bug Fixes
+
+* provide fetchErrors method ([#14](https://github.com/softwaregroup-bg/ut-port-tcp/issues/14)) ([59be823](https://github.com/softwaregroup-bg/ut-port-tcp/commit/59be823))
+* refactor as class ([#15](https://github.com/softwaregroup-bg/ut-port-tcp/issues/15)) ([906c170](https://github.com/softwaregroup-bg/ut-port-tcp/commit/906c170))
+* refactor port.errors ([56a73fe](https://github.com/softwaregroup-bg/ut-port-tcp/commit/56a73fe))
+* remove logLevel ([ef949c9](https://github.com/softwaregroup-bg/ut-port-tcp/commit/ef949c9))
+* remove unused dependency ([b919be6](https://github.com/softwaregroup-bg/ut-port-tcp/commit/b919be6))
+* upgrade dependencies ([72fa1b1](https://github.com/softwaregroup-bg/ut-port-tcp/commit/72fa1b1))
+* upgrade ut-tools ([4df1563](https://github.com/softwaregroup-bg/ut-port-tcp/commit/4df1563))
+
+
+### BREAKING CHANGES
+
+* requires upgrade of ut-port and ut-run
+
+
+
 <a name="6.1.0"></a>
 # [6.1.0](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v6.0.1...v6.1.0) (2018-08-02)
 
