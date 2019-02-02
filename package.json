@@ -6,7 +6,7 @@
     "ut-bitsyntax": "^6.0.17"
   },
   "devDependencies": {
-    "ut-tools": "^5.32.10"
+    "ut-tools": "^6.8.10"
   },
   "description": "UT port tcp module",
   "scripts": {
