@@ -101,7 +101,7 @@ module.exports = function({parent}) {
         parent && parent.prototype.start.apply(this, params);
         this.connRouter = routers[this.config.routingMethod] || this.config.connRouter;
 
-        let onConnection = conId => stream => {
+        let onConnection = defaultConId => stream => {
             this.incConnections();
             this.connections.push(stream);
 
@@ -125,7 +125,7 @@ module.exports = function({parent}) {
                 remoteAddress: stream.remoteAddress,
                 remotePort: stream.remotePort
             };
-            conId = conId || this.conCount;
+            let conId = defaultConId || this.conCount;
             if (this.config.listen || this.connRouter) {
                 context.conId = conId;
             }
