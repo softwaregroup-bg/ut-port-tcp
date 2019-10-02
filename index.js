@@ -182,6 +182,7 @@ module.exports = function({utPort}) {
         }
         stop() {
             if (this.re) {
+                this.re.removeAllListeners();
                 let e = this.re.disconnect();
                 e && e._connection && e._connection.unref();
             }
