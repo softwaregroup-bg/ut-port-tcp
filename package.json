@@ -1,6 +1,6 @@
 {
   "name": "ut-port-tcp",
-  "version": "7.0.1",
+  "version": "7.0.2",
   "dependencies": {
     "reconnect-core": "1.3.0",
     "ut-bitsyntax": "^6.0.17"
