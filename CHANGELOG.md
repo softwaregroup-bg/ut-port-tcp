@@ -1,3 +1,12 @@
+## [7.0.3](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.0.2...v7.0.3) (2019-10-14)
+
+
+### Bug Fixes
+
+* align telemetry field naming ([c452e4c](https://github.com/softwaregroup-bg/ut-port-tcp/commit/c452e4c))
+
+
+
 ## [7.0.2](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.0.1...v7.0.2) (2019-10-02)
 
 
