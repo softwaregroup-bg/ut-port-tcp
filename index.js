@@ -40,8 +40,8 @@ module.exports = function({utPort}) {
             const result = await super.init(...arguments);
             this.bytesSent = this.counter && this.counter('counter', 'bs', 'Bytes sent', 300);
             this.bytesReceived = this.counter && this.counter('counter', 'br', 'Bytes received', 300);
-            this.activeEncodeCount = this.counter && this.counter('gauge', 'en', 'Active encode count');
-            this.activeDecodeCount = this.counter && this.counter('gauge', 'de', 'Active decode count');
+            this.activeEncodeCount = this.counter && this.counter('gauge', 'ae', 'Active encode count');
+            this.activeDecodeCount = this.counter && this.counter('gauge', 'ad', 'Active decode count');
             const client = this.config.ssl ? require('tls') : require('net');
             this._reconnect = reconnect((...args) => client.connect(...args));
 
