@@ -1,3 +1,12 @@
+# [7.1.0](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.0.3...v7.1.0) (2019-12-06)
+
+
+### Features
+
+* fully configurable client and connection ([e92275a](https://github.com/softwaregroup-bg/ut-port-tcp/commit/e92275a))
+
+
+
 ## [7.0.3](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.0.2...v7.0.3) (2019-10-14)
 
 
