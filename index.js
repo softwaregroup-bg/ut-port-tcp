@@ -42,7 +42,7 @@ module.exports = function({utPort}) {
             this.bytesReceived = this.counter && this.counter('counter', 'br', 'Bytes received', 300);
             this.activeEncodeCount = this.counter && this.counter('gauge', 'ae', 'Active encode count');
             this.activeDecodeCount = this.counter && this.counter('gauge', 'ad', 'Active decode count');
-            const client = this.config.ssl ? require('tls') : require('net');
+            const client = this.config.client || (this.config.ssl ? require('tls') : require('net'));
             this._reconnect = reconnect((...args) => client.connect(...args));
 
             if (this.config.format) {
@@ -161,12 +161,14 @@ module.exports = function({utPort}) {
                     connProp = {
                         host: this.config.host,
                         port: this.config.port,
-                        rejectUnauthorized: false
+                        rejectUnauthorized: false,
+                        ...this.config.connection
                     };
                 } else {
                     connProp = {
                         host: this.config.host,
-                        port: this.config.port
+                        port: this.config.port,
+                        ...this.config.connection
                     };
                 }
                 if (this.config.localPort) {
