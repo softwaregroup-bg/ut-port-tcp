@@ -1,3 +1,12 @@
+## [7.2.1](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.2.0...v7.2.1) (2020-01-15)
+
+
+### Bug Fixes
+
+* pass clusterIP properly ([19a1450](https://github.com/softwaregroup-bg/ut-port-tcp/commit/19a1450))
+
+
+
 # [7.2.0](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.1.0...v7.2.0) (2020-01-15)
 
 
