@@ -1,3 +1,12 @@
+# [7.2.0](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.1.0...v7.2.0) (2020-01-15)
+
+
+### Features
+
+* k8s support ([c4e69c6](https://github.com/softwaregroup-bg/ut-port-tcp/commit/c4e69c6))
+
+
+
 # [7.1.0](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.0.3...v7.1.0) (2019-12-06)
 
 
