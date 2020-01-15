@@ -75,6 +75,16 @@ module.exports = function({utPort}) {
             }
             this.config.maxReceiveBuffer = parseInt(this.config.maxReceiveBuffer, 10) || 0;
             !this.config.maxReceiveBuffer && this.log.warn && this.log.warn({$meta: {mtid: 'config', opcode: 'maxReceiveBuffer'}, message: 'Missing maxReceiveBuffer in configuration'});
+            if (this.config.clusterIp && this.config.port && this.config.listen) {
+                this.config.k8s = {
+                    ports: [{
+                        name: 'tcp-server',
+                        service: true,
+                        containerPort: this.config.port,
+                        clusterIP: this.config.clusterIp
+                    }]
+                };
+            }
             return result;
         }
         incConnections() {
