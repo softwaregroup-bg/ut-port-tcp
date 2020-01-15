@@ -1,3 +1,12 @@
+## [7.2.2](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.2.1...v7.2.2) (2020-01-15)
+
+
+### Bug Fixes
+
+* support external k8s loadBalancer ([73f87c7](https://github.com/softwaregroup-bg/ut-port-tcp/commit/73f87c7))
+
+
+
 ## [7.2.1](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.2.0...v7.2.1) (2020-01-15)
 
 
