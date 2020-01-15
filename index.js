@@ -79,9 +79,10 @@ module.exports = function({utPort}) {
                 this.config.k8s = {
                     ports: [{
                         name: 'tcp-server',
-                        service: true,
-                        containerPort: this.config.port,
-                        clusterIP: this.config.clusterIp
+                        service: {
+                            clusterIP: this.config.clusterIp
+                        },
+                        containerPort: this.config.port
                     }]
                 };
             }
