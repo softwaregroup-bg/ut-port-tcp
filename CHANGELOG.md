@@ -1,3 +1,7 @@
+## [7.2.3](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.2.2...v7.2.3) (2020-01-17)
+
+
+
 ## [7.2.2](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.2.1...v7.2.2) (2020-01-15)
 
 
