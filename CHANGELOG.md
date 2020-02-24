@@ -1,3 +1,12 @@
+## [7.2.4](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.2.3...v7.2.4) (2020-02-24)
+
+
+### Bug Fixes
+
+* lint ([45437e2](https://github.com/softwaregroup-bg/ut-port-tcp/commit/45437e20720fd96a3f6d7b1edc9bb7db88041961))
+
+
+
 ## [7.2.3](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.2.2...v7.2.3) (2020-01-17)
 
 
