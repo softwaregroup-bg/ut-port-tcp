@@ -89,7 +89,7 @@ TCP server
 It has to be saved inside the ports folder of the implementation and the full
 path to the module should look like this:
 
-    /impl-<NAME>/ports/t24/index.js
+`/impl-<NAME>/ports/t24/index.js`
 
 In the implementation's `server.js` file the port is loaded like this:
 

@@ -16,6 +16,7 @@ module.exports = function({utPort}) {
             this.codec = null;
             this.connections = [];
         }
+
         get defaults() {
             return {
                 id: null,
@@ -36,6 +37,7 @@ module.exports = function({utPort}) {
                 }
             };
         }
+
         async init() {
             const result = await super.init(...arguments);
             this.bytesSent = this.counter && this.counter('counter', 'bs', 'Bytes sent', 300);
@@ -48,7 +50,7 @@ module.exports = function({utPort}) {
             if (this.config.format) {
                 this.codec = undefined;
                 if (this.config.format.codec) {
-                    let codecType = typeof this.config.format.codec;
+                    const codecType = typeof this.config.format.codec;
                     let Codec;
 
                     if (codecType === 'function') {
@@ -88,17 +90,19 @@ module.exports = function({utPort}) {
             }
             return result;
         }
+
         incConnections() {
             this.conCount += 1;
             if (this.conCount > 0x1FFFFFFFFFFFFF) {
                 this.conCount = 1;
             }
         }
+
         async start() {
             this.bus && this.bus.attachHandlers(this.methods, this.config.imports, this);
             const result = await super.start(...arguments);
 
-            let onConnection = stream => {
+            const onConnection = stream => {
                 this.incConnections();
                 this.connections.push(stream);
 
@@ -115,13 +119,13 @@ module.exports = function({utPort}) {
                 }
 
                 stream.on('close', () => {
-                    let index = this.connections.indexOf(stream);
+                    const index = this.connections.indexOf(stream);
                     if (index !== -1) {
                         this.connections.splice(index, 1);
                     }
                 });
 
-                let context = {
+                const context = {
                     trace: 0,
                     callbacks: {},
                     created: new Date(),
@@ -193,10 +197,11 @@ module.exports = function({utPort}) {
             }
             return result;
         }
+
         stop() {
             if (this.re) {
                 this.re.removeAllListeners();
-                let e = this.re.disconnect();
+                const e = this.re.disconnect();
                 e && e._connection && e._connection.unref();
             }
             if (this.server) {
