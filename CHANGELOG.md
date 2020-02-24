@@ -1,3 +1,12 @@
+## [7.2.6](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.2.5...v7.2.6) (2020-02-24)
+
+
+### Bug Fixes
+
+* int ([f8b5c5d](https://github.com/softwaregroup-bg/ut-port-tcp/commit/f8b5c5d854b38704fb26cb52bda93f55c03f2dd7))
+
+
+
 ## [7.2.5](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.2.4...v7.2.5) (2020-02-24)
 
 
