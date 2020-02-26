@@ -45,10 +45,6 @@ module.exports = function({utPort}) {
                     listen: {
                         type: 'boolean',
                         default: false
-                    },
-                    timeout: {
-                        type: 'integer',
-                        default: 30000
                     }
                 },
                 dependencies: {
@@ -93,10 +89,7 @@ module.exports = function({utPort}) {
                             ]
                         }]
                     }
-                },
-                required: [
-                    'timeout'
-                ]
+                }
             };
         }
 
