@@ -1,3 +1,12 @@
+# [7.3.0](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.2.6...v7.3.0) (2020-02-27)
+
+
+### Features
+
+* validation / installation schema ([2ba3127](https://github.com/softwaregroup-bg/ut-port-tcp/commit/2ba312779c1310c222eb823d6c0716c6705143d5))
+
+
+
 ## [7.2.6](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.2.5...v7.2.6) (2020-02-24)
 
 
