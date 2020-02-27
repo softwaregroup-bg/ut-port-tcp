@@ -38,6 +38,61 @@ module.exports = function({utPort}) {
             };
         }
 
+        get schema() {
+            return {
+                type: 'object',
+                properties: {
+                    listen: {
+                        type: 'boolean',
+                        default: false
+                    }
+                },
+                dependencies: {
+                    listen: {
+                        oneOf: [{
+                            properties: {
+                                listen: {
+                                    enum: [false]
+                                },
+                                host: {
+                                    type: 'string'
+                                },
+                                port: {
+                                    type: 'integer'
+                                }
+                            },
+                            required: [
+                                'host',
+                                'port'
+                            ]
+                        }, {
+                            properties: {
+                                listen: {
+                                    enum: [true]
+                                },
+                                port: {
+                                    type: 'integer'
+                                },
+                                maxConnections: {
+                                    type: 'integer',
+                                    default: 1000
+                                },
+                                connectionDropPolicy: {
+                                    type: 'string',
+                                    enum: ['oldest', 'newest']
+                                }
+                            },
+                            required: [
+                                'port',
+                                'maxConnections',
+                                'connectionDropPolicy'
+                            ]
+                        }]
+                    }
+                }
+            };
+        }
+
         async init() {
             const result = await super.init(...arguments);
             this.bytesSent = this.counter && this.counter('counter', 'bs', 'Bytes sent', 300);
