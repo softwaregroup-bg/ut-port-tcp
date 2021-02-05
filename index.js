@@ -158,7 +158,7 @@ module.exports = function({utPort}) {
             const result = await super.start(...arguments);
             const onError = (type) => (err) => {
                 if(this.log && this.log.error) {
-                    const error = new Error('TCP');
+                    const error = new Error(`TCP ${type}`);
                     error.cause = err;
                     error.type = `portTCP.${type}`; // portTCP.server, portTCP.client
                     this.log.error(error);
