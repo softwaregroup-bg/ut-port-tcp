@@ -1,3 +1,12 @@
+## [7.3.1](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.3.0...v7.3.1) (2021-02-05)
+
+
+### Bug Fixes
+
+* better errro trace ([#20](https://github.com/softwaregroup-bg/ut-port-tcp/issues/20)) ([f3fd763](https://github.com/softwaregroup-bg/ut-port-tcp/commit/f3fd7631f054a33d83c7cd24e3843ab6ee7c3329))
+
+
+
 # [7.3.0](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.2.6...v7.3.0) (2020-02-27)
 
 
