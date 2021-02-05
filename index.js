@@ -156,6 +156,14 @@ module.exports = function({utPort}) {
         async start() {
             this.bus && this.bus.attachHandlers(this.methods, this.config.imports, this);
             const result = await super.start(...arguments);
+            const onError = (type) => (err) => {
+                if (this.log && this.log.error) {
+                    const error = new Error(`TCP ${type}`);
+                    error.cause = err;
+                    error.type = `portTCP.${type}`; // portTCP.server, portTCP.client
+                    this.log.error(error);
+                }
+            };
 
             const onConnection = stream => {
                 this.incConnections();
@@ -221,9 +229,7 @@ module.exports = function({utPort}) {
                     // todo
                     // notify('close', through2({objectMode: true}, nullWriter), {trace: 0, callbacks: {}});
                 })
-                    .on('error', err => {
-                        this.log && this.log.error && this.log.error(err);
-                    })
+                    .on('error', onError('server'))
                     .listen(this.config.port);
             } else {
                 let connProp;
@@ -245,9 +251,7 @@ module.exports = function({utPort}) {
                     connProp.localPort = this.config.localPort;
                 }
                 this.re = this._reconnect(onConnection)
-                    .on('error', (err) => {
-                        this.log && this.log.error && this.log.error(err);
-                    })
+                    .on('error', onError('client'))
                     .connect(connProp);
             }
             return result;
