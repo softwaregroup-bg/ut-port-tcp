@@ -222,9 +222,13 @@ module.exports = function({utPort}) {
                     // notify('close', through2({objectMode: true}, nullWriter), {trace: 0, callbacks: {}});
                 })
                     .on('error', err => {
+                        err.stack = [
+                            (new Error().stack),
+                            err.stack
+                        ].join('\n');
                         this.log &&
                         this.log.error &&
-                        this.log.error(new Error(err));
+                        this.log.error(err);
                     })
                     .listen(this.config.port);
             } else {
@@ -248,9 +252,13 @@ module.exports = function({utPort}) {
                 }
                 this.re = this._reconnect(onConnection)
                     .on('error', (err) => {
+                        err.stack = [
+                            (new Error().stack),
+                            err.stack
+                        ].join('\n');
                         this.log &&
                         this.log.error &&
-                        this.log.error(new Error(err));
+                        this.log.error(err);
                     })
                     .connect(connProp);
             }
