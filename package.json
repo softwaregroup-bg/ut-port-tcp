@@ -7,7 +7,7 @@
   },
   "devDependencies": {
     "tap": "^12.6.0",
-    "ut-tools": "^6.33.2"
+    "ut-tools": "^6.36.2"
   },
   "description": "UT port tcp module",
   "scripts": {
