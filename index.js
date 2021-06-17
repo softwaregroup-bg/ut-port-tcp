@@ -133,10 +133,12 @@ module.exports = function({utPort}) {
             this.config.maxReceiveBuffer = parseInt(this.config.maxReceiveBuffer, 10) || 0;
             !this.config.maxReceiveBuffer && this.log.warn && this.log.warn({$meta: {mtid: 'config', opcode: 'maxReceiveBuffer'}, message: 'Missing maxReceiveBuffer in configuration'});
             if (this.config.port && this.config.listen) {
+                const namespace = [].concat(this.config.namespace)[0].toLowerCase().replace(/\//g, '-');
                 this.config.k8s = {
                     ports: [{
-                        name: 'tcp-server',
+                        name: 'tcp-' + namespace,
                         service: {
+                            name: 'tcp-' + namespace,
                             loadBalancerIP: this.config.loadBalancerIp
                         },
                         containerPort: this.config.port
