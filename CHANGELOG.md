@@ -1,3 +1,12 @@
+## [7.3.2](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.3.1...v7.3.2) (2021-06-17)
+
+
+### Bug Fixes
+
+* unique k8s names [UTCORE-121] ([d0691f8](https://github.com/softwaregroup-bg/ut-port-tcp/commit/d0691f8a239182bbab429ca8d8d4c498e2fb84ef))
+
+
+
 ## [7.3.1](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.3.0...v7.3.1) (2021-02-05)
 
 
