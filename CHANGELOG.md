@@ -1,3 +1,12 @@
+# [7.4.0](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.3.2...v7.4.0) (2022-05-12)
+
+
+### Features
+
+* ability to prefix messages using bitsyntax ([c067bbe](https://github.com/softwaregroup-bg/ut-port-tcp/commit/c067bbe0c303b316e9f6c4247f1aac851754fdfe))
+
+
+
 ## [7.3.2](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.3.1...v7.3.2) (2021-06-17)
 
 
