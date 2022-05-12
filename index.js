@@ -33,7 +33,8 @@ module.exports = function({utPort}) {
                     size: null,
                     codec: null,
                     id: null,
-                    sizeAdjust: 0
+                    sizeAdjust: 0,
+                    prefix: ''
                 }
             };
         }
@@ -121,12 +122,13 @@ module.exports = function({utPort}) {
                     this.frameBuilder = this.codec.frameBuilder;
                     this.framePattern = this.codec.frameReducer;
                 } else if (this.config.format.size) {
-                    this.frameBuilder = bitSyntax.builder('size:' + this.config.format.size + ', data:size/binary');
-                    if (this.config.format.sizeAdjust || this.config.maxReceiveBuffer) {
-                        this.framePatternSize = bitSyntax.matcher('size:' + this.config.format.size + ', data/binary');
+                    const {size, sizeAdjust, prefix} = this.config.format;
+                    this.frameBuilder = bitSyntax.builder(`${prefix}${prefix && ', '}size:${size}, data:size/binary`);
+                    if (sizeAdjust || this.config.maxReceiveBuffer) {
+                        this.framePatternSize = bitSyntax.matcher(`${prefix}${prefix && ', '}size:${size}, data/binary`);
                         this.framePattern = bitSyntax.matcher('data:size/binary, rest/binary');
                     } else {
-                        this.framePattern = bitSyntax.matcher('size:' + this.config.format.size + ', data:size/binary, rest/binary');
+                        this.framePattern = bitSyntax.matcher(`${prefix}${prefix && ', '}size:${size}, data:size/binary, rest/binary`);
                     }
                 }
             }
