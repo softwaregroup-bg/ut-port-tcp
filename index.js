@@ -34,7 +34,7 @@ module.exports = function({utPort}) {
                     codec: null,
                     id: null,
                     sizeAdjust: 0,
-                    prefix: '""'
+                    prefix: ''
                 }
             };
         }
@@ -123,12 +123,12 @@ module.exports = function({utPort}) {
                     this.framePattern = this.codec.frameReducer;
                 } else if (this.config.format.size) {
                     const {size, sizeAdjust, prefix} = this.config.format;
-                    this.frameBuilder = bitSyntax.builder(`${prefix}, size:${size}, data:size/binary`);
+                    this.frameBuilder = bitSyntax.builder(`${prefix}${prefix && ', '}size:${size}, data:size/binary`);
                     if (sizeAdjust || this.config.maxReceiveBuffer) {
-                        this.framePatternSize = bitSyntax.matcher(`${prefix}, size:${size}, data/binary`);
+                        this.framePatternSize = bitSyntax.matcher(`${prefix}${prefix && ', '}size:${size}, data/binary`);
                         this.framePattern = bitSyntax.matcher('data:size/binary, rest/binary');
                     } else {
-                        this.framePattern = bitSyntax.matcher(`${prefix}, size:${size}, data:size/binary, rest/binary`);
+                        this.framePattern = bitSyntax.matcher(`${prefix}${prefix && ', '}size:${size}, data:size/binary, rest/binary`);
                     }
                 }
             }
