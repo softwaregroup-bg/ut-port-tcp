@@ -244,6 +244,15 @@ module.exports = function({utPort}) {
                         rejectUnauthorized: false,
                         ...this.config.connection
                     };
+                    if (this.config.ssl.keyPath) {
+                        connProp.key = readFileSync(this.config.ssl.keyPath, 'utf8');
+                    }
+                    if (this.config.ssl.certPath) {
+                        connProp.cert = readFileSync(this.config.ssl.certPath, 'utf8');
+                    }
+                    if (Array.isArray(this.config.ssl.caPaths)) {
+                        connProp.ca = this.config.ssl.caPaths.map(file => readFileSync(file, 'utf8'));
+                    }
                 } else {
                     connProp = {
                         host: this.config.host,
