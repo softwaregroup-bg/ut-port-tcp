@@ -1,3 +1,12 @@
+# [7.5.0](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.4.0...v7.5.0) (2023-08-30)
+
+
+### Features
+
+* HED-189 - Add ssl certificate option for client. ([4434992](https://github.com/softwaregroup-bg/ut-port-tcp/commit/4434992f26b61d67bfd4bd4d5cf2c9192f46dca8))
+
+
+
 # [7.4.0](https://github.com/softwaregroup-bg/ut-port-tcp/compare/v7.3.2...v7.4.0) (2022-05-12)
 
 
